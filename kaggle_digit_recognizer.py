@@ -90,7 +90,7 @@ model.add(LeakyReLU())
 model.add(Dropout(0.5))
 model.add(Dense(10, activation='softmax'))
 
-optimizer = tf.keras.optimizers.RMSprop()
+
 loss_history = []
 accuracy_history = []
 
