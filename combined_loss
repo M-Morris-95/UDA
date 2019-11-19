@@ -1,0 +1,35 @@
+def myloss(labels,logits,image, model, num_labels = 10, Lambda = 0.2):
+    OHlabels = tf.one_hot(labels, num_labels)
+    nplabels = labels.numpy()
+
+    idxs = np.squeeze(np.argwhere(nplabels == 11))
+    Nidxs = np.squeeze(np.argwhere(nplabels != 11))
+
+    # Calculate supervised loss - cross entropy
+    sup_labels = tf.gather(OHlabels, Nidxs)
+    sup_predictions = tf.gather(logits, Nidxs)
+
+    sup_loss = sup_labels * -tf.math.log(sup_predictions)
+    if sup_loss.ndim == 1:
+        sup_loss = tf.reduce_sum(sup_loss, axis=0)
+    else:
+        sup_loss = tf.reduce_sum(sup_loss, axis=1)
+
+
+    # Calculate unsupervised loss
+    Px_hat = model(datagen.flow(tf.gather(image, idxs), batch_size=len(idxs)).next())
+    Px = tf.gather(logits, idxs)
+
+    KL_Divergence = tf.transpose(KL_divergence(Px_hat, Px) * tf.ones([10, 1]))
+    Exp_hat = tf.reduce_sum(Px_hat * KL_Divergence, axis=1)
+    Exp_hat = tf.transpose(Exp_hat * tf.ones([10, 1]))
+    usup_loss = tf.reduce_sum(Px*Exp_hat, axis = 0)
+    usup_loss = usup_loss * Lambda
+    #usup_loss = CCE(y_true=tf.gather(logits, idxs), y_pred=temp)
+
+    if not sup_loss._shape_as_list():
+        sup_loss = tf.expand_dims(sup_loss, axis=0)
+    if not usup_loss._shape_as_list():
+        usup_loss = tf.expand_dims(usup_loss, axis=0)
+
+    return tf.reduce_mean(tf.concat([sup_loss, usup_loss], axis = 0))
