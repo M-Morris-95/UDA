@@ -131,12 +131,12 @@ class Network:
                 self.train_step(u_x_batches[batch])
                 self.train_step(x_batches[batch], y_batches[batch])
                 self.accuracy = (self.accuracy * batch + self.batch_accuracy)/(batch+1)
-                print('Epoch {}, train accuracy:{acc:1.2f}%, batch: {}/{}'.format(epoch + 1, batch, n_batches, acc = self.accuracy), end='\r')
+                print('Epoch {}, train accuracy:{acc:1.2f}%, batch: {}/{}'.format(epoch + 1, batch + 1, n_batches, acc = self.accuracy), end='\r')
 
             if val_x.any():
                 accuracy = self.evaluate(val_x, val_y)
                 self.accuracy_history.append(accuracy)
 
             print('Epoch {}, train accuracy:{acc:1.2f}%, validation accuracy:{valacc:1.2f}, batch: {}/{}'.format(
-                epoch + 1, batch, n_batches, valacc=accuracy, acc=self.accuracy))
+                epoch + 1, batch + 1, n_batches, valacc=accuracy, acc=self.accuracy))
 
