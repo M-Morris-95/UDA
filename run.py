@@ -5,10 +5,10 @@ from Trainer import Network
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 import numpy as np
 
-import tensorflow.keras
+from tensorflow import keras
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Dropout, Flatten
-from tensorflow.keras.layers import Conv2D, MaxPooling2D
+from tensorflow.keras.layers import Dense, Conv2D, MaxPooling2D, Dropout, Flatten, LeakyReLU
+from tensorflow.keras.layers import BatchNormalization
 
 datagen = ImageDataGenerator(
     featurewise_std_normalization=False,
@@ -52,10 +52,10 @@ x_test = x_test[:,:,:,np.newaxis]
 # model.add(Dense(10, activation='softmax'))
 
 
-
+weight_init = keras.initializers.RandomNormal(mean=0.0, stddev=0.02)
 model = Sequential()
-model.add(Conv2D(64, kernel_size=4, input_shape=(28, 28, 1), padding="same", strides=2,
-                 kernel_initializer=weight_init))
+model.add(Conv2D(64, kernel_size=4, input_shape=(28, 28, 1), padding="same", strides=2, kernel_initializer=weight_init))
+
 model.add(BatchNormalization())
 model.add(LeakyReLU())
 model.add(MaxPooling2D(pool_size=2, strides=1))
