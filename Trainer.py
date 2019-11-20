@@ -139,7 +139,3 @@ class Network:
 
             print('Epoch {}, train accuracy:{acc:1.2f}%, validation accuracy:{valacc:1.2f}, batch: {}/{}'.format(
                 epoch + 1, batch + 1, n_batches, valacc=accuracy, acc=self.accuracy))
-            print('Epoch {}, train accuracy:{acc:1.2f}%, validation accuracy:{valacc:1.2f}, batch: {}/{}'.format(
-                epoch + 1, batch + 1, n_batches, valacc=accuracy, acc=self.accuracy), file = open("output.txt", "a")
-
-
