@@ -38,18 +38,54 @@ Lx = Lx[:,:,:,np.newaxis]
 x_test = x_test[:,:,:,np.newaxis]
 
 
+# model = Sequential()
+# # input: 100x100 images with 3 channels -> (100, 100, 3) tensors.
+# # this applies 32 convolution filters of size 3x3 each.
+# model.add(Conv2D(32, (3, 3), activation='relu', input_shape=(28, 28, 1)))
+# model.add(Conv2D(32, (3, 3), activation='relu'))
+# model.add(MaxPooling2D(pool_size=(2, 2)))
+# model.add(Dropout(0.25))
+#
+# model.add(Flatten())
+# model.add(Dense(256, activation='relu'))
+# model.add(Dropout(0.5))
+# model.add(Dense(10, activation='softmax'))
+
+
+
 model = Sequential()
-# input: 100x100 images with 3 channels -> (100, 100, 3) tensors.
-# this applies 32 convolution filters of size 3x3 each.
-model.add(Conv2D(32, (3, 3), activation='relu', input_shape=(28, 28, 1)))
-model.add(Conv2D(32, (3, 3), activation='relu'))
-model.add(MaxPooling2D(pool_size=(2, 2)))
-model.add(Dropout(0.25))
+model.add(Conv2D(64, kernel_size=4, input_shape=(28, 28, 1), padding="same", strides=2,
+                 kernel_initializer=weight_init))
+model.add(BatchNormalization())
+model.add(LeakyReLU())
+model.add(MaxPooling2D(pool_size=2, strides=1))
+model.add(Dropout(0.5))
+
+model.add(Conv2D(128, kernel_size=4, padding="same", strides=2, kernel_initializer=weight_init))
+model.add(BatchNormalization())
+model.add(LeakyReLU())
+model.add(MaxPooling2D(pool_size=2, strides=1))
+model.add(Dropout(0.5))
+
+model.add(Conv2D(256, kernel_size=4, padding="same", strides=2, kernel_initializer=weight_init))
+model.add(BatchNormalization())
+model.add(LeakyReLU())
+model.add(MaxPooling2D(pool_size=2, strides=1))
+model.add(Dropout(0.5))
+
+model.add(Conv2D(256, kernel_size=4, padding="same", strides=2, kernel_initializer=weight_init))
+model.add(BatchNormalization())
+model.add(LeakyReLU())
+model.add(Dropout(0.5))
 
 model.add(Flatten())
-model.add(Dense(256, activation='relu'))
+model.add(Dense(1024, kernel_initializer=weight_init))
+model.add(BatchNormalization())
+model.add(LeakyReLU())
 model.add(Dropout(0.5))
 model.add(Dense(10, activation='softmax'))
+
+
 
 network = Network(model, datagen)
 
@@ -57,7 +93,8 @@ network.train(train_x=Lx,
               train_y=Ly,
               unlabelled_x=Ux,
               val_x = x_test, val_y=y_test,
-              epochs=5,
+              epochs=10,
+              Lambda = 0.5,
               labelled_batch_size=32,
               unlabelled_batch_size = 256)
 
