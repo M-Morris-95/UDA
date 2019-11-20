@@ -1,6 +1,6 @@
 import tensorflow as tf
 import numpy as np
-from progressbar import ProgressBar
+import progressbar
 
 class Network:
     def __init__(self, model, datagen = [], optimizer = tf.keras.optimizers.Adam()):
@@ -10,6 +10,8 @@ class Network:
         self.datagen = datagen
         self.Lambda = 0
         self.optimizer = optimizer
+        self.accuracy = 0
+        self.batch_accuracy = 0
 
     def predict(self, x, batch_size=32):
         n_batches = int(np.ceil(np.shape(x)[0] / batch_size))
@@ -56,6 +58,8 @@ class Network:
                 loss = self.Lambda*self.divergence_loss(predictions, x)
             else:
                 loss = self.categorical_cross_entropy(predictions, y)
+                predictions = tf.math.argmax(predictions, axis=1)
+                self.batch_accuracy = (tf.reduce_mean(tf.cast(tf.equal(predictions, y), tf.float32)) * 100).numpy()
 
         var_list = self.model.trainable_variables
         grads = tape.gradient(loss, var_list)
@@ -120,14 +124,21 @@ class Network:
         x_batches, y_batches, u_x_batches, n_batches = self.make_batches(train_x, train_y, unlabelled_x,
                                                                          labelled_batch_size, unlabelled_batch_size)
 
+
+
         for epoch in range(epochs):
-            print('Training epoch {}'.format(epoch + 1))
-            pbar = ProgressBar()
-            for batch in pbar(range(n_batches)):
-                self.train_step(u_x_batches[batch])
+            self.accuracy = 0
+            print('')
+            for batch in range(n_batches):
+                # self.train_step(u_x_batches[batch])
                 self.train_step(x_batches[batch], y_batches[batch])
+                self.accuracy = (self.accuracy * batch + self.batch_accuracy)/(batch+1)
+                print('Epoch {}, train accuracy:{acc:1.2f}%, batch: {}/{}'.format(epoch + 1, batch, n_batches, acc = self.accuracy), end='\r')
+
 
             if val_x.any():
                 accuracy = self.evaluate(val_x, val_y)
                 self.accuracy_history.append(accuracy)
-            print('Epoch {} finished, Accuracy = {acc:1.2f}%'.format(epoch + 1, acc=accuracy))
+            print('Epoch {}, train accuracy:{acc:1.2f}%, validation accuracy:{valacc:1.2f}, batch: {}/{}'.format(
+                epoch + 1, batch, n_batches, valacc=accuracy, acc=self.accuracy))
+
