@@ -93,9 +93,10 @@ network.train(train_x=Lx,
               train_y=Ly,
               unlabelled_x=Ux,
               val_x = x_test, val_y=y_test,
-              epochs=20,
+              epochs=1,
               Lambda = 0.5,
               labelled_batch_size=32,
               unlabelled_batch_size = 256)
 
 
+network.model.save('UDA_Model.hdf5')
