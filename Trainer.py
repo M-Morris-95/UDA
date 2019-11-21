@@ -175,11 +175,12 @@ class Network:
                 accuracy = self.evaluate(val_x, val_y)
                 self.accuracy_history.append(accuracy)
 
-            print('Epoch {epc} {batch}/{nbatch}, train accuracy:{acc:1.2f}%, validation accuracy:{valacc:1.2f}%'
-                  'L-divergence:{divL:1.4f}, L-cross entropy:{supL:1.4f}'.format(epc=(epoch + 1),
+            print('Epoch {epc} {batch}/{nbatch}, train accuracy:{acc:1.2f}%, validation accuracy:{valacc:1.2f}%, '
+                  'L-divergence:{divL:1.4f}, L-cross entropy:{supL:1.4f}, TSA limit:{tsa_lim:1.2f}'.format(epc=(epoch + 1),
                                                                                  batch=(batch + 1),
                                                                                  nbatch=n_batches,
                                                                                  acc=self.accuracy,
                                                                                  valacc=accuracy,
                                                                                  divL=self.divergence_loss_history[-1],
-                                                                                 supL=self.supervised_loss_history[-1]))
+                                                                                 supL=self.supervised_loss_history[-1],
+                                                                                 tsa_lim=nt))
