@@ -5,7 +5,7 @@ from Trainer import Network
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 import numpy as np
 import sys
-
+import os
 from tensorflow import keras
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Conv2D, MaxPooling2D, Dropout, Flatten, LeakyReLU
@@ -41,18 +41,6 @@ Lx = Lx[:,:,:,np.newaxis]
 x_test = x_test[:,:,:,np.newaxis]
 
 
-# model = Sequential()
-# # input: 100x100 images with 3 channels -> (100, 100, 3) tensors.
-# # this applies 32 convolution filters of size 3x3 each.
-# model.add(Conv2D(32, (3, 3), activation='relu', input_shape=(28, 28, 1)))
-# model.add(Conv2D(32, (3, 3), activation='relu'))
-# model.add(MaxPooling2D(pool_size=(2, 2)))
-# model.add(Dropout(0.25))
-#
-# model.add(Flatten())
-# model.add(Dense(256, activation='relu'))
-# model.add(Dropout(0.5))
-# model.add(Dense(10, activation='softmax'))
 
 
 weight_init = keras.initializers.RandomNormal(mean=0.0, stddev=0.02)
@@ -95,9 +83,10 @@ network = Network(model, datagen)
 network.train(train_x=Lx,
               train_y=Ly,
               unlabelled_x=Ux,
-              val_x = x_test, val_y=y_test,
+              val_x=x_test,
+              val_y=y_test,
               epochs=20,
-              Lambda = 0.5,
+              Lambda=1,
               labelled_batch_size=32,
               unlabelled_batch_size = 256)
 

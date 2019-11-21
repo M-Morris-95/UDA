@@ -29,50 +29,6 @@ class Network:
         accuracy = (tf.reduce_mean(tf.cast(tf.equal(y_pred, y_val), tf.float32)) * 100).numpy()
         return accuracy
 
-    def kl_divergence(self, p_logits, q_logits):
-        p = tf.nn.softmax(p_logits)
-        log_p = tf.nn.log_softmax(p_logits)
-        log_q = tf.nn.log_softmax(q_logits)
-
-        kl = tf.reduce_sum(p * (log_p - log_q), -1)
-        return kl
-
-    def categorical_cross_entropy(self, predictions, labels, num_labels=10):
-        OHlabels = tf.one_hot(labels, num_labels)
-        sup_loss = OHlabels * -tf.math.log(predictions)
-        return tf.reduce_mean(sup_loss)
-
-
-    def divergence_loss(self, predictions, x):
-        aug_x = self.datagen.flow(x, batch_size=x.shape[0]).next()
-        aug_x -= np.min(aug_x)
-
-        aug_predictions = self.model(aug_x)
-        KLD = self.kl_divergence(predictions, aug_predictions)
-        KLD = tf.reduce_mean(KLD)
-        return KLD
-
-    def global_step(self, Ux, Lx, Ly):
-        with tf.GradientTape() as tape:
-            predictions = self.model(Ux, training=True)
-            Uloss = self.Lambda * self.divergence_loss(predictions, Ux)
-            self.divergence_loss_history.append(Uloss.numpy())
-
-            predictions = self.model(Lx, training=True)
-            Lloss = self.categorical_cross_entropy(predictions, Ly)
-            self.supervised_loss_history.append(Lloss.numpy())
-            predictions = tf.math.argmax(predictions, axis=1)
-            self.batch_accuracy = (tf.reduce_mean(tf.cast(tf.equal(predictions, Ly), tf.float32)) * 100).numpy()
-
-            loss = Uloss + Lloss
-
-        var_list = self.model.trainable_variables
-        grads = tape.gradient(loss, var_list)
-
-        self.optimizer.apply_gradients(zip(grads, var_list))
-
-
-
     def unison_shuffled_copies(self, X, Y):
         assert len(X) == len(Y)
         p = np.random.permutation(len(X))
@@ -122,20 +78,80 @@ class Network:
 
         return (x_batches, y_batches, u_x_batches, n_batches)
 
-    def train(self, train_x, train_y, unlabelled_x=[], val_x=[], val_y=[], epochs=10, Lambda=1, labelled_batch_size=32,
+    def kl_divergence(self, p_logits, q_logits):
+        p = tf.nn.softmax(p_logits)
+        log_p = tf.nn.log_softmax(p_logits)
+        log_q = tf.nn.log_softmax(q_logits)
+
+        kl = tf.reduce_sum(p * (log_p - log_q), -1)
+        return kl
+
+    def categorical_cross_entropy(self, predictions, labels, lim = 1, num_labels=10):
+
+
+        OHlabels = tf.one_hot(labels, num_labels)
+
+        correct_confidence = tf.reduce_max(OHlabels * predictions, axis=1)
+        correct_confidence = tf.squeeze([tf.where(correct_confidence < lim)])
+
+        sup_loss = OHlabels * -tf.math.log(predictions)
+        sup_loss = sup_loss.numpy()[correct_confidence.numpy()]
+
+
+        return tf.reduce_mean(sup_loss)
+
+
+    def divergence_loss(self, predictions, x):
+        aug_x = self.datagen.flow(x, batch_size=x.shape[0]).next()
+        aug_x -= np.min(aug_x)
+
+        aug_predictions = self.model(aug_x)
+        KLD = self.kl_divergence(predictions, aug_predictions)
+        KLD = tf.reduce_mean(KLD)
+        return KLD
+
+    def global_step(self, Ux, Lx, Ly, lim = 1):
+        with tf.GradientTape() as tape:
+            predictions = self.model(Ux, training=True)
+            Uloss = self.Lambda * self.divergence_loss(predictions, Ux)
+            self.divergence_loss_history.append(Uloss.numpy())
+
+            predictions = self.model(Lx, training=True)
+            Lloss = self.categorical_cross_entropy(predictions, Ly, lim=lim)
+            self.supervised_loss_history.append(Lloss.numpy())
+            predictions = tf.math.argmax(predictions, axis=1)
+            self.batch_accuracy = (tf.reduce_mean(tf.cast(tf.equal(predictions, Ly), tf.float32)) * 100).numpy()
+
+            loss = Uloss + Lloss
+
+        var_list = self.model.trainable_variables
+        grads = tape.gradient(loss, var_list)
+
+        self.optimizer.apply_gradients(zip(grads, var_list))
+
+
+    def train(self, train_x, train_y, unlabelled_x, val_x=[], val_y=[], epochs=10, Lambda=1, labelled_batch_size=32,
               unlabelled_batch_size=[]):
         self.Lambda = Lambda
         x_batches, y_batches, u_x_batches, n_batches = self.make_batches(train_x, train_y, unlabelled_x,
                                                                          labelled_batch_size, unlabelled_batch_size)
-
-
+        K = 10
+        total_steps = n_batches*epochs
         for epoch in range(epochs):
             self.accuracy = 0
+            steps = epoch*n_batches
             for batch in range(n_batches):
-                self.global_step(u_x_batches[batch], x_batches[batch], y_batches[batch])
+
+                ## do training sample annealing to reduce overfitting - very hacky
+                steps += 1
+                at = 1-np.exp(-5*steps/total_steps)
+                nt = at*(1-1/K)+1/K
+
+
+                self.global_step(u_x_batches[batch], x_batches[batch], y_batches[batch], lim = nt)
                 self.accuracy = (self.accuracy * batch + self.batch_accuracy)/(batch+1)
-                print('Epoch {epc}, batch: {batch}/{nbatch}, train accuracy:{acc:1.2f}%, '
-                      'L-divergence:{divL:1.4f}, L-cross entropy{supL:1.4f}'.format(epc = (epoch + 1),
+                print('Epoch {epc} {batch}/{nbatch}, train accuracy:{acc:1.2f}%, '
+                      'L-divergence:{divL:1.4f}, L-cross entropy:{supL:1.4f}'.format(epc = (epoch + 1),
                                                                                   batch = (batch + 1),
                                                                                   nbatch = n_batches,
                                                                                   acc = self.accuracy,
@@ -146,5 +162,10 @@ class Network:
                 accuracy = self.evaluate(val_x, val_y)
                 self.accuracy_history.append(accuracy)
 
-            print('Epoch {}, train accuracy:{acc:1.2f}%, validation accuracy:{valacc:1.2f}, batch: {}/{}'.format(
-                epoch + 1, batch + 1, n_batches, valacc=accuracy, acc=self.accuracy))
+            print('Epoch {epc} {batch}/{nbatch}, train accuracy:{acc:1.2f}%, '
+                  'L-divergence:{divL:1.4f}, L-cross entropy:{supL:1.4f}'.format(epc=(epoch + 1),
+                                                                                 batch=(batch + 1),
+                                                                                 nbatch=n_batches,
+                                                                                 acc=self.accuracy,
+                                                                                 divL=self.divergence_loss_history[-1],
+                                                                                 supL=self.supervised_loss_history[-1]))
