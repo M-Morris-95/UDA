@@ -140,8 +140,7 @@ class Network:
                                                                                   nbatch = n_batches,
                                                                                   acc = self.accuracy,
                                                                                   divL = self.divergence_loss_history[-1],
-                                                                                  supL = self.supervised_loss_history[-1]),
-                      end='\r')
+                                                                                  supL = self.supervised_loss_history[-1]), end='\r')
 
             if val_x.any():
                 accuracy = self.evaluate(val_x, val_y)
