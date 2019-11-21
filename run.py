@@ -34,7 +34,7 @@ datagen.fit(x_test.reshape((x_test.shape[0], 28, 28, 1)))
 datset_size = np.size(y_train)
 split = 0.05
 split = int(np.floor(datset_size*split))
-
+split = 200
 Lx = x_train[:split]
 Ly = y_train[:split]
 
