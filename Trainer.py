@@ -2,6 +2,10 @@ import tensorflow as tf
 import numpy as np
 import progressbar
 
+
+from randaugment import policies as found_policies
+from randaugment import augmentation_transforms
+aug_policies = found_policies.randaug_policies()
 class Network:
     def __init__(self, model, datagen = [], optimizer = tf.keras.optimizers.Adam()):
         self.model = model
@@ -99,8 +103,16 @@ class Network:
 
 
     def divergence_loss(self, predictions, x):
-        aug_x = self.datagen.flow(x, batch_size=x.shape[0]).next()
-        aug_x -= np.min(aug_x)
+        # aug_x = self.datagen.flow(x, batch_size=x.shape[0]).next()
+        # aug_x -= np.min(aug_x)
+        aug_x = np.empty(np.shape(x))
+        for i in range(np.shape(x)[0]):
+            chosen_policy = aug_policies[np.random.choice(len(aug_policies))]
+            aug_image = augmentation_transforms.apply_policy(chosen_policy, x[i])
+            aug_image /= (np.max(aug_image) - np.min(aug_image))
+            aug_image -= np.min(aug_image)
+            aug_x[i] = aug_image
+
 
         aug_predictions = self.model(aug_x)
         KLD = self.kl_divergence(predictions, aug_predictions)

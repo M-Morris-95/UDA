@@ -10,22 +10,15 @@ from tensorflow import keras
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Activation, Dense, Conv2D, MaxPooling2D, Dropout, Flatten, LeakyReLU
 from tensorflow.keras.layers import BatchNormalization
+
+
 import parser
 
 parser = parser.GetParser()
 args = parser.parse_args()
 
-datagen = ImageDataGenerator(
-    featurewise_std_normalization=False,
-    rotation_range=45,
-    width_shift_range=0.1,
-    height_shift_range=0.1,
-    horizontal_flip=True,
-    vertical_flip=True)
 
-#sys.stdout = open('output.txt','wt')
 
-# Fetch and format the mnist data
 
 (x_train, y_train), (x_test, y_test), = tf.keras.datasets.cifar10.load_data()
 num_classes=10
@@ -35,16 +28,24 @@ y_train = np.squeeze(y_train)
 y_test = np.squeeze(y_test)
 x_train=x_train/np.max(x_train)
 x_test=x_test/np.max(x_test)
+
+
+
+datagen = ImageDataGenerator(
+    featurewise_std_normalization=False,
+    rotation_range=45,
+    width_shift_range=0.1,
+    height_shift_range=0.1,
+    horizontal_flip=True,
+    vertical_flip=True)
+
+
+
 datagen.fit(x_train)
 
 Lx = x_train[:split]
 Ly = y_train[:split]
-
 Ux = x_train[split:]
-
-# Ux = Ux[:,:,:,np.newaxis]
-# Lx = Lx[:,:,:,np.newaxis]
-# x_test = x_test[:,:,:,np.newaxis]
 
 model = Sequential()
 model.add(Conv2D(32, (3, 3), padding='same',
@@ -84,6 +85,7 @@ network.train(train_x=Lx,
               usup = args.usup,
               labelled_batch_size=32,
               unlabelled_batch_size = 256)
+
 
 
 network.model.save('UDA_Model.hdf5')
