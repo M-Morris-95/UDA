@@ -10,6 +10,10 @@ from tensorflow import keras
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Conv2D, MaxPooling2D, Dropout, Flatten, LeakyReLU
 from tensorflow.keras.layers import BatchNormalization
+import parser
+
+parser = parser.GetParser()
+args = parser.parse_args()
 
 datagen = ImageDataGenerator(
     featurewise_std_normalization=False,
@@ -85,10 +89,10 @@ network.train(train_x=Lx,
               unlabelled_x=Ux,
               val_x=x_test,
               val_y=y_test,
-              epochs=10,
-              Lambda=0.5,
-              TSA = 'linear',
-              usup = True,
+              epochs=args.epochs,
+              Lambda=args.Lambda,
+              TSA = args.TSA,
+              usup = args.usup,
               labelled_batch_size=32,
               unlabelled_batch_size = 256)
 
