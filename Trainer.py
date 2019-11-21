@@ -150,22 +150,26 @@ class Network:
 
                 self.global_step(u_x_batches[batch], x_batches[batch], y_batches[batch], lim = nt)
                 self.accuracy = (self.accuracy * batch + self.batch_accuracy)/(batch+1)
-                print('Epoch {epc} {batch}/{nbatch}, train accuracy:{acc:1.2f}%, '
-                      'L-divergence:{divL:1.4f}, L-cross entropy:{supL:1.4f}'.format(epc = (epoch + 1),
+                print('Epoch {epc}/{epc_max} {batch}/{nbatch}, train accuracy:{acc:1.2f}%, '
+                      'L-divergence:{divL:1.3f}, L-cross entropy:{supL:1.3f}, TSA limit:{tsa_lim:1.2f}'.format(epc = (epoch + 1),
+                                                                                  epc_max = epochs,
                                                                                   batch = (batch + 1),
                                                                                   nbatch = n_batches,
                                                                                   acc = self.accuracy,
                                                                                   divL = self.divergence_loss_history[-1],
-                                                                                  supL = self.supervised_loss_history[-1]), end='\r')
+                                                                                  supL = self.supervised_loss_history[-1],
+                                                                                  tsa_lim = nt),
+                end='\r')
 
             if val_x.any():
                 accuracy = self.evaluate(val_x, val_y)
                 self.accuracy_history.append(accuracy)
 
-            print('Epoch {epc} {batch}/{nbatch}, train accuracy:{acc:1.2f}%, '
+            print('Epoch {epc} {batch}/{nbatch}, train accuracy:{acc:1.2f}%, validation accuracy:{valacc:1.2f}%'
                   'L-divergence:{divL:1.4f}, L-cross entropy:{supL:1.4f}'.format(epc=(epoch + 1),
                                                                                  batch=(batch + 1),
                                                                                  nbatch=n_batches,
                                                                                  acc=self.accuracy,
+                                                                                 valacc=accuracy,
                                                                                  divL=self.divergence_loss_history[-1],
                                                                                  supL=self.supervised_loss_history[-1]))
