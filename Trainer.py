@@ -12,6 +12,8 @@ class Network:
         self.optimizer = optimizer
         self.accuracy = 0
         self.batch_accuracy = 0
+        self.divergence_loss_history = []
+        self.supervised_loss_history = []
 
     def predict(self, x, batch_size=32):
         n_batches = int(np.ceil(np.shape(x)[0] / batch_size))
@@ -50,24 +52,28 @@ class Network:
         KLD = tf.reduce_mean(KLD)
         return KLD
 
-    def train_step(self, x, y = np.zeros(3)):
+    def global_step(self, Ux, Lx, Ly):
         with tf.GradientTape() as tape:
-            predictions = self.model(x, training=True)
+            predictions = self.model(Ux, training=True)
+            Uloss = self.Lambda * self.divergence_loss(predictions, Ux)
+            self.divergence_loss_history.append(Uloss)
 
-            if y.all() == 0:
-                loss = self.Lambda*self.divergence_loss(predictions, x)
-            else:
-                loss = self.categorical_cross_entropy(predictions, y)
-                predictions = tf.math.argmax(predictions, axis=1)
-                self.batch_accuracy = (tf.reduce_mean(tf.cast(tf.equal(predictions, y), tf.float32)) * 100).numpy()
+            predictions = self.model(Lx, training=True)
+            Lloss = self.categorical_cross_entropy(predictions, Ly)
+            self.supervised_loss_history.append(Lloss)
+            predictions = tf.math.argmax(predictions, axis=1)
+            self.batch_accuracy = (tf.reduce_mean(tf.cast(tf.equal(predictions, Ly), tf.float32)) * 100).numpy()
+
+            loss = Uloss + Lloss
 
         var_list = self.model.trainable_variables
         grads = tape.gradient(loss, var_list)
         grads_and_vars = zip(grads, var_list)
 
-
         self.optimizer.apply_gradients(grads_and_vars)
         self.loss_history.append(loss.numpy().mean())
+
+
 
     def unison_shuffled_copies(self, X, Y):
         assert len(X) == len(Y)
@@ -128,8 +134,9 @@ class Network:
         for epoch in range(epochs):
             self.accuracy = 0
             for batch in range(n_batches):
-                self.train_step(u_x_batches[batch])
-                self.train_step(x_batches[batch], y_batches[batch])
+                #self.train_step(u_x_batches[batch])
+                #self.train_step(x_batches[batch], y_batches[batch])
+                self.global_step(u_x_batches[batch], x_batches[batch], y_batches[batch])
                 self.accuracy = (self.accuracy * batch + self.batch_accuracy)/(batch+1)
                 print('Epoch {}, train accuracy:{acc:1.2f}%, batch: {}/{}'.format(epoch + 1, batch + 1, n_batches, acc = self.accuracy), end='\r')
 

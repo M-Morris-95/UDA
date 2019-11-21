@@ -19,7 +19,7 @@ datagen = ImageDataGenerator(
     horizontal_flip=True,
     vertical_flip=True)
 
-sys.stdout = open('output.txt','wt')
+#sys.stdout = open('output.txt','wt')
 
 # Fetch and format the mnist data
 (x_train, y_train), (x_test, y_test), = tf.keras.datasets.mnist.load_data()
