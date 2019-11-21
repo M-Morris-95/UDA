@@ -12,7 +12,7 @@ class Network:
         self.batch_accuracy = 0
 
         self.accuracy_history = []
-        self.divergence_loss_history = []
+        self.divergence_loss_history = [0]
         self.supervised_loss_history = []
 
     def predict(self, x, batch_size=32):
@@ -88,15 +88,13 @@ class Network:
 
     def categorical_cross_entropy(self, predictions, labels, lim = 1, num_labels=10):
 
-
         OHlabels = tf.one_hot(labels, num_labels)
 
         correct_confidence = tf.reduce_max(OHlabels * predictions, axis=1)
         correct_confidence = tf.squeeze([tf.where(correct_confidence < lim)])
 
         sup_loss = OHlabels * -tf.math.log(predictions)
-        sup_loss = sup_loss.numpy()[correct_confidence.numpy()]
-
+        sup_loss = tf.gather(sup_loss, correct_confidence.numpy())
 
         return tf.reduce_mean(sup_loss)
 
@@ -129,6 +127,19 @@ class Network:
 
         self.optimizer.apply_gradients(zip(grads, var_list))
 
+    def sup_step(self, Lx, Ly):
+        with tf.GradientTape() as tape:
+            predictions = self.model(Lx, training=True)
+            loss = self.categorical_cross_entropy(predictions, Ly, lim=1)
+            self.supervised_loss_history.append(loss.numpy())
+            predictions = tf.math.argmax(predictions, axis=1)
+            self.batch_accuracy = (tf.reduce_mean(tf.cast(tf.equal(predictions, Ly), tf.float32)) * 100).numpy()
+
+        var_list = self.model.trainable_variables
+        grads = tape.gradient(loss, var_list)
+
+        self.optimizer.apply_gradients(zip(grads, var_list))
+
     def TSA(self, steps, TSA_type):
         t_T =  steps / self.total_steps
 
@@ -143,8 +154,9 @@ class Network:
 
         return at*(1 - 1 / self.num_categories) + 1 / self.num_categories
 
-    def train(self, train_x, train_y, unlabelled_x, val_x=[], val_y=[], epochs=10, Lambda=1, labelled_batch_size=32,
-              unlabelled_batch_size=[], TSA = False):
+    def train(self, train_x, train_y, unlabelled_x = 0, val_x=[], val_y=[], epochs=10, Lambda=1, labelled_batch_size=32,
+              unlabelled_batch_size=[], TSA = False, usup = True):
+        self.usup = usup
         self.Lambda = Lambda
         x_batches, y_batches, u_x_batches, n_batches = self.make_batches(train_x, train_y, unlabelled_x,
                                                                          labelled_batch_size, unlabelled_batch_size)
@@ -158,7 +170,10 @@ class Network:
 
                 ## do training sample annealing to reduce overfitting - very hacky
                 nt = self.TSA(steps, TSA)
-                self.global_step(u_x_batches[batch], x_batches[batch], y_batches[batch], lim = nt)
+                if self.usup:
+                    self.global_step(u_x_batches[batch], x_batches[batch], y_batches[batch], lim = nt)
+                else:
+                    self.sup_step(x_batches[batch], y_batches[batch])
                 self.accuracy = (self.accuracy * batch + self.batch_accuracy)/(batch+1)
                 print('Epoch {epc}/{epc_max} {batch}/{nbatch}, train accuracy:{acc:1.2f}%, '
                       'L-divergence:{divL:1.3f}, L-cross entropy:{supL:1.3f}, TSA limit:{tsa_lim:1.2f}'.format(epc = (epoch + 1),
