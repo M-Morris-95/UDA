@@ -4,6 +4,7 @@ import tensorflow as tf
 from Trainer import Network
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 import numpy as np
+import sys
 
 from tensorflow import keras
 from tensorflow.keras.models import Sequential
@@ -95,7 +96,7 @@ network.train(train_x=Lx,
               train_y=Ly,
               unlabelled_x=Ux,
               val_x = x_test, val_y=y_test,
-              epochs=1,
+              epochs=20,
               Lambda = 0.5,
               labelled_batch_size=32,
               unlabelled_batch_size = 256)
