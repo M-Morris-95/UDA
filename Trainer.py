@@ -5,13 +5,13 @@ import progressbar
 class Network:
     def __init__(self, model, datagen = [], optimizer = tf.keras.optimizers.Adam()):
         self.model = model
-        self.accuracy_history = []
-        self.loss_history = []
         self.datagen = datagen
         self.Lambda = 0
         self.optimizer = optimizer
         self.accuracy = 0
         self.batch_accuracy = 0
+
+        self.accuracy_history = []
         self.divergence_loss_history = []
         self.supervised_loss_history = []
 
@@ -56,11 +56,11 @@ class Network:
         with tf.GradientTape() as tape:
             predictions = self.model(Ux, training=True)
             Uloss = self.Lambda * self.divergence_loss(predictions, Ux)
-            self.divergence_loss_history.append(Uloss)
+            self.divergence_loss_history.append(Uloss.numpy())
 
             predictions = self.model(Lx, training=True)
             Lloss = self.categorical_cross_entropy(predictions, Ly)
-            self.supervised_loss_history.append(Lloss)
+            self.supervised_loss_history.append(Lloss.numpy())
             predictions = tf.math.argmax(predictions, axis=1)
             self.batch_accuracy = (tf.reduce_mean(tf.cast(tf.equal(predictions, Ly), tf.float32)) * 100).numpy()
 
@@ -68,10 +68,8 @@ class Network:
 
         var_list = self.model.trainable_variables
         grads = tape.gradient(loss, var_list)
-        grads_and_vars = zip(grads, var_list)
 
-        self.optimizer.apply_gradients(grads_and_vars)
-        self.loss_history.append(loss.numpy().mean())
+        self.optimizer.apply_gradients(zip(grads, var_list))
 
 
 
@@ -134,11 +132,16 @@ class Network:
         for epoch in range(epochs):
             self.accuracy = 0
             for batch in range(n_batches):
-                #self.train_step(u_x_batches[batch])
-                #self.train_step(x_batches[batch], y_batches[batch])
                 self.global_step(u_x_batches[batch], x_batches[batch], y_batches[batch])
                 self.accuracy = (self.accuracy * batch + self.batch_accuracy)/(batch+1)
-                print('Epoch {}, train accuracy:{acc:1.2f}%, batch: {}/{}'.format(epoch + 1, batch + 1, n_batches, acc = self.accuracy), end='\r')
+                print('Epoch {epc}, batch: {batch}/{nbatch}, train accuracy:{acc:1.2f}%, '
+                      'L-divergence:{divL:1.4f}, L-cross entropy{supL:1.4f}'.format(epc = (epoch + 1),
+                                                                                  batch = (batch + 1),
+                                                                                  nbatch = n_batches,
+                                                                                  acc = self.accuracy,
+                                                                                  divL = self.divergence_loss_history[-1],
+                                                                                  supL = self.supervised_loss_history[-1]),
+                      end='\r')
 
             if val_x.any():
                 accuracy = self.evaluate(val_x, val_y)
