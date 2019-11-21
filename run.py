@@ -86,7 +86,8 @@ network.train(train_x=Lx,
               val_x=x_test,
               val_y=y_test,
               epochs=10,
-              Lambda=1,
+              Lambda=0.5,
+              TSA = 'linear',
               labelled_batch_size=32,
               unlabelled_batch_size = 256)
 
