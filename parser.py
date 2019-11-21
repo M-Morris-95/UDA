@@ -23,8 +23,9 @@ def GetParser():
                         required=False)
 
     parser.add_argument('--usup', '-U',
+                        action="store_true",
                         help='Train on unsupervised data',
-                        default=True,
+                        default=False,
                         required=False)
 
     return parser
