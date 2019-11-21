@@ -130,11 +130,10 @@ class Network:
         self.optimizer.apply_gradients(zip(grads, var_list))
 
     def TSA(self, steps, TSA_type):
-        nt = (1 - 1 / self.num_categories) + 1 / self.num_categories
         t_T =  steps / self.total_steps
 
         if TSA_type == 'linear':
-            at = 1
+            at = t_T
         elif TSA_type == 'log':
             at = 1 - np.exp(- t_T * 5)
         elif TSA_type == 'exponential':
@@ -142,7 +141,7 @@ class Network:
         else:
             return 1
 
-        return nt * at
+        return at*(1 - 1 / self.num_categories) + 1 / self.num_categories
 
     def train(self, train_x, train_y, unlabelled_x, val_x=[], val_y=[], epochs=10, Lambda=1, labelled_batch_size=32,
               unlabelled_batch_size=[], TSA = False):
@@ -155,15 +154,10 @@ class Network:
             self.accuracy = 0
             steps = epoch*n_batches
             for batch in range(n_batches):
+                steps = steps+1
 
                 ## do training sample annealing to reduce overfitting - very hacky
-                if TSA:
-                    steps += 1
-                    at = 1-np.exp(-5*steps/total_steps)
-                    nt = at*(1-1/K)+1/K
-                else:
-                    nt = False
-
+                nt = self.TSA(steps, TSA)
                 self.global_step(u_x_batches[batch], x_batches[batch], y_batches[batch], lim = nt)
                 self.accuracy = (self.accuracy * batch + self.batch_accuracy)/(batch+1)
                 print('Epoch {epc}/{epc_max} {batch}/{nbatch}, train accuracy:{acc:1.2f}%, '
