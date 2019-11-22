@@ -28,4 +28,9 @@ def GetParser():
                         default=False,
                         required=False)
 
+    parser.add_argument('--split',
+                        type = int,
+                        default = 100
+                        required = False)
+
     return parser

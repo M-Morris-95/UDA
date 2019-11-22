@@ -22,7 +22,7 @@ args = parser.parse_args()
 
 (x_train, y_train), (x_test, y_test), = tf.keras.datasets.cifar10.load_data()
 num_classes=10
-split = 200
+split = args.split
 
 y_train = np.squeeze(y_train)
 y_test = np.squeeze(y_test)
