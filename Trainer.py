@@ -83,8 +83,8 @@ class Network:
 
     def kl_divergence(self, p_logits, q_logits):
         p = tf.nn.softmax(p_logits)
-        log_p = tf.nn.log_softmax(p_logits)
-        log_q = tf.nn.log_softmax(q_logits)
+        # log_p = tf.nn.log_softmax(p_logits)
+        # log_q = tf.nn.log_softmax(q_logits)
 
         kl = tf.reduce_sum(p * (log_p - log_q), -1)
         return kl
