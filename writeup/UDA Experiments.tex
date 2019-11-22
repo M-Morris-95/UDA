@@ -3,6 +3,7 @@
 \usepackage{amsfonts}
 \usepackage[ruled,vlined]{algorithm2e}
 \usepackage[a4paper, total={6in, 10in}]{geometry}
+\setlength{\belowcaptionskip}{-10pt}
 \graphicspath{ {./images/} }
 \title{Unsupervised Data Augmentation Experiments}
 \author{Michael Morris}
@@ -31,30 +32,39 @@ Unsupervised Data Augmentation (UDA) is a method of leveraging unlabelled data b
 \begin{equation}
 \min_{\theta} \mathcal{J}(\theta) =\mathbb{E}_{x,y^* \in L}[-\log p_\theta (y^* | x)]+\lambda\mathbb{E}_{x \in U}\mathbb{E}_{\hat{x}\sim q(\hat{x} \mid x)}[\mathcal{D}_{KL}(p_{\tilde{\theta}}(y \mid x) \parallel p_\theta (y \mid \hat{x})) ]
 \end{equation}
+
 Where the KL divergence is:
 \begin{equation}
 \mathcal{D}_{KL}(P \parallel Q) = \sum_{x \in X} P_{(x)} \log \left(\frac{P_{(x)}}{Q_{(x)}}\right)
 \end{equation}
-The training objective is illustrated below:
-\begin{figure}[h]
+
+The training objective is illustrated in Figure \ref{fig:objective} and leads to the pseudocode in Algorithm \ref{alg:UDAAlg}
+\begin{figure}[!ht]
   \begin{center}
-    \includegraphics[width=.8\textwidth]{training_objective}
+    \includegraphics[width=.7\textwidth]{training_objective}
     \caption{Training objective for UDA}
+    \label{fig:objective}
   \end{center}
 \end{figure}
-
-
-The pseudo code is as follows:
-\begin{algorithm}[htbp]
+\subsection{Training Signal Annealing}
+A common problem when running UDA is overfitting to the few labelled training samples. To combat this a technique Training Signal Annealing (TSA) is used which gradually releases training signals from labelled data into the loss function. When the model predicts the correct class of a training example with a confidence above a set threshold it is removed from the loss function. The threshold is increased during training from a worst case of $\frac{1}{K}$ to $1$. Where $K$ is the number of classes in the dataset. For the $t^th$ iteration out of $T$ total iterations the threshold $n_t$ is $\alpha_{t} * (1-\frac{1}{K})+\frac{1}{K}$. $\alpha_t$ is either: logarithmic $1-\exp(\frac{t}{T} * 5)$, linear $t/T$, or exponential: $\exp(({t}{T}-1)*5)$. The fewer labelled training samples you have the more slowly the training samples should be released. 
+\begin{figure}[!ht]
+  \begin{center}
+    \includegraphics[width=0.9\textwidth]{TSA}
+    \caption{TSA Schedules}
+    \label{fig:objective}
+  \end{center}
+\end{figure}
+\begin{algorithm}[!ht]
 \SetAlgoLined
 duplicate data so equal number of potential batches in labelled and unlabelled sets\;
-shuffle data\;
- split into batches\;
+shuffle and split into batches\;
  \For{epochs}{
  	\For{batches}{
 		\If{labelled batch}{
 			calculate $p_\theta (y^* | x)$\;
    			$Lloss = \mathbb{E}_{x,y^* \in L}[-\log p_\theta (y^* | x)]$\;
+			Apply training signal annealing
 		}
 		\If {unlabelled batch}{
 			create $\hat{x}$ by augmenting $x$\;
@@ -65,7 +75,84 @@ shuffle data\;
 	calculate accuracy from labelled validation set\;
  }
 \caption{UDA Algorithm}
+\label{alg:UDAAlg}
 \end{algorithm}
+
+\subsection{Experiments}
+Experiments were carried out on the MNIST and CIFAR10 datasets, a convolutional neural network with 3 convolutional layers, 1 hidden layer and a softmax output layer was used for both, the only difference being the shape of the inputs (MNIST: 28,28,1,   CIFAR10: 32,32,3). 
+\subsubsection{MNIST}
+The MNIST dataset was split into 42000 training samples, and 18000 testing samples, within the training set 10\% was reserved for cross validation. With a fully supervised learning using cross entropy as the loss function an error rate of 0.458\% was achieved. 
+
+
+Linear TSA, 200 samples 
+
+Epoch 1 234/234, train accuracy:49.58%, validation accuracy:66.77%, L-divergence:0.0382, L-cross entropy:0.2889, TSA limit:0.19
+Epoch 2 234/234, train accuracy:83.46%, validation accuracy:72.86%, L-divergence:0.0517, L-cross entropy:0.2663, TSA limit:0.28
+Epoch 3 234/234, train accuracy:91.62%, validation accuracy:66.80%, L-divergence:0.0514, L-cross entropy:nan,      TSA limit:0.37
+Epoch 4 234/234, train accuracy:95.24%, validation accuracy:68.67%, L-divergence:0.0566, L-cross entropy:0.0851, TSA limit:0.46
+Epoch 5 234/234, train accuracy:97.33%, validation accuracy:58.29%, L-divergence:0.0593, L-cross entropy:0.2309, TSA limit:0.55
+Epoch 6 234/234, train accuracy:98.44%, validation accuracy:67.30%, L-divergence:0.0613, L-cross entropy:0.0505, TSA limit:0.64
+Epoch 7 234/234, train accuracy:98.89%, validation accuracy:74.22%, L-divergence:0.0641, L-cross entropy:0.0515, TSA limit:0.73
+Epoch 8 234/234, train accuracy:99.04%, validation accuracy:73.16%, L-divergence:0.0649, L-cross entropy:0.0285, TSA limit:0.82
+Epoch 9 234/234, train accuracy:99.36%, validation accuracy:73.60%, L-divergence:0.0652, L-cross entropy:0.1144, TSA limit:0.91
+Epoch 10 234/234,train accuracy:99.64%, validation accuracy:72.78%, L-divergence:0.0657, L-cross entropy:0.0019, TSA limit:1.00
+Exponential TSA, 200 samples
+
+Epoch 1 234/234, train accuracy:47.36%, validation accuracy:61.97%, L-divergence:0.0306, L-cross entropy:nan,      TSA limit:0.11
+Epoch 2 234/234, train accuracy:72.37%, validation accuracy:55.46%, L-divergence:0.0312, L-cross entropy:nan,      TSA limit:0.12
+Epoch 3 234/234, train accuracy:78.69%, validation accuracy:61.55%, L-divergence:0.0236, L-cross entropy:nan,      TSA limit:0.13
+Epoch 4 234/234, train accuracy:78.85%, validation accuracy:62.90%, L-divergence:0.0260, L-cross entropy:nan,      TSA limit:0.14
+Epoch 5 234/234, train accuracy:84.11%, validation accuracy:64.37%, L-divergence:0.0248, L-cross entropy:0.1921, TSA limit:0.17
+Epoch 6 234/234, train accuracy:87.50%, validation accuracy:66.03%, L-divergence:0.0243, L-cross entropy:nan,      TSA limit:0.22
+Epoch 7 234/234, train accuracy:91.46%, validation accuracy:70.88%, L-divergence:0.0346, L-cross entropy:0.1531, TSA limit:0.30
+Epoch 8 234/234, train accuracy:95.05%, validation accuracy:59.71%, L-divergence:0.0374, L-cross entropy:0.1066, TSA limit:0.43
+Epoch 9 234/234, train accuracy:97.49%, validation accuracy:68.30%, L-divergence:0.0510, L-cross entropy:0.1080, TSA limit:0.65
+Epoch 10 234/234,train accuracy:98.88%, validation accuracy:70.40%, L-divergence:0.0576, L-cross entropy:0.0039, TSA limit:1.00
+ 
+Logarithmic TSA, 200 samples
+Epoch 1 234/234, train accuracy:58.79%, validation accuracy:72.86%, L-divergence:0.0514, L-cross entropy:0.2832, TSA limit:0.45
+Epoch 2 234/234, train accuracy:91.68%, validation accuracy:69.12%, L-divergence:0.0617, L-cross entropy:0.1075, TSA limit:0.67
+Epoch 3 234/234, train accuracy:96.16%, validation accuracy:81.87%, L-divergence:0.0665, L-cross entropy:0.1871, TSA limit:0.80
+Epoch 4 234/234, train accuracy:98.61%, validation accuracy:81.52%, L-divergence:0.0665, L-cross entropy:nan,      TSA limit:0.88
+Epoch 5 234/234, train accuracy:98.67%, validation accuracy:84.16%, L-divergence:0.0668, L-cross entropy:0.0832, TSA limit:0.93
+Epoch 6 234/234, train accuracy:99.32%, validation accuracy:80.06%, L-divergence:0.0691, L-cross entropy:0.0071, TSA limit:0.96
+Epoch 7 234/234, train accuracy:99.51%, validation accuracy:81.98%, L-divergence:0.0683, L-cross entropy:nan,      TSA limit:0.97
+Epoch 8 234/234, train accuracy:99.71%, validation accuracy:82.41%, L-divergence:0.0661, L-cross entropy:0.0031, TSA limit:0.98
+Epoch 9 234/234, train accuracy:99.42%, validation accuracy:73.38%, L-divergence:0.0671, L-cross entropy:0.0059, TSA limit:0.99
+Epoch 10 234/234,train accuracy:99.73%, validation accuracy:83.38%, L-divergence:0.0660, L-cross entropy:0.0047, TSA limit:0.99
+ 
+Supervised learning, 200 samples
+Epoch 1 234/234, train accuracy:71.38%, validation accuracy:11.35%, L-divergence:0.0000, L-cross entropy:0.0129, TSA limit:1.00
+Epoch 2 234/234, train accuracy:96.40%, validation accuracy:11.80%, L-divergence:0.0000, L-cross entropy:0.0028, TSA limit:1.00
+Epoch 3 234/234, train accuracy:98.30%, validation accuracy:87.12%, L-divergence:0.0000, L-cross entropy:0.0046, TSA limit:1.00
+Epoch 4 234/234, train accuracy:99.16%, validation accuracy:89.81%, L-divergence:0.0000, L-cross entropy:0.0004, TSA limit:1.00
+Epoch 5 234/234, train accuracy:99.41%, validation accuracy:88.39%, L-divergence:0.0000, L-cross entropy:0.0003, TSA limit:1.00
+Epoch 6 234/234, train accuracy:99.18%, validation accuracy:89.24%, L-divergence:0.0000, L-cross entropy:0.0001, TSA limit:1.00
+Epoch 7 234/234, train accuracy:99.25%, validation accuracy:89.62%, L-divergence:0.0000, L-cross entropy:0.0001, TSA limit:1.00
+Epoch 8 234/234, train accuracy:99.55%, validation accuracy:89.74%, L-divergence:0.0000, L-cross entropy:0.0086, TSA limit:1.00
+Epoch 9 234/234, train accuracy:99.29%, validation accuracy:87.81%, L-divergence:0.0000, L-cross entropy:0.0035, TSA limit:1.00
+Epoch 10 234/234,train accuracy:99.40%, validation accuracy:88.94%, L-divergence:0.0000, L-cross entropy:0.0024, TSA limit:1.00
+ 
+Supervised learning, 60 samples
+Epoch 1 235/235, train accuracy:77.67%, validation accuracy:11.35%, L-divergence:0.0000, L-cross entropy:0.0025, TSA limit:1.00
+Epoch 2 235/235, train accuracy:99.04%, validation accuracy:11.46%, L-divergence:0.0000, L-cross entropy:0.0030, TSA limit:1.00
+Epoch 3 235/235, train accuracy:99.36%, validation accuracy:74.98%, L-divergence:0.0000, L-cross entropy:0.0011, TSA limit:1.00
+Epoch 4 235/235, train accuracy:99.67%, validation accuracy:78.26%, L-divergence:0.0000, L-cross entropy:0.0000, TSA limit:1.00
+Epoch 5 235/235, train accuracy:99.76%, validation accuracy:80.96%, L-divergence:0.0000, L-cross entropy:0.0003, TSA limit:1.00
+Epoch 6 235/235, train accuracy:99.52%, validation accuracy:78.43%, L-divergence:0.0000, L-cross entropy:0.0001, TSA limit:1.00
+Epoch 7 235/235, train accuracy:99.56%, validation accuracy:80.39%, L-divergence:0.0000, L-cross entropy:0.0331, TSA limit:1.00
+Epoch 8 235/235, train accuracy:99.47%, validation accuracy:81.57%, L-divergence:0.0000, L-cross entropy:0.0001, TSA limit:1.00
+Epoch 9 235/235, train accuracy:99.79%, validation accuracy:80.01%, L-divergence:0.0000, L-cross entropy:0.0000, TSA limit:1.00
+Epoch 10 235/235, train accuracy:99.87%, validation accuracy:80.63%, L-divergence:0.0000, L-cross entropy:0.0000, TSA limit:1.00
+ 
+No TSA, 200 Samples
+Epoch 1 234/234, train accuracy:65.09%, validation accuracy:53.28%, L-divergence:0.0498, L-cross entropy:0.0456, TSA limit:1.00
+Epoch 2 234/234, train accuracy:93.48%, validation accuracy:23.72%, L-divergence:0.0488, L-cross entropy:0.0151, TSA limit:1.00
+Epoch 3 234/234, train accuracy:96.91%, validation accuracy:36.07%, L-divergence:0.0412, L-cross entropy:0.0069, TSA limit:1.00
+Epoch 4 234/234, train accuracy:97.70%, validation accuracy:25.68%, L-divergence:0.0314, L-cross entropy:0.0144, TSA limit:1.00
+Epoch 5 234/234, train accuracy:98.25%, validation accuracy:16.35%, L-divergence:0.0176, L-cross entropy:0.0144, TSA limit:1.00
+Epoch 6 234/234, train accuracy:98.86%, validation accuracy:11.28%, L-divergence:0.0078, L-cross entropy:0.0101, TSA limit:1.00
+
 
 
 

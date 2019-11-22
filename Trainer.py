@@ -7,14 +7,14 @@ from randaugment import policies as found_policies
 from randaugment import augmentation_transforms
 aug_policies = found_policies.randaug_policies()
 class Network:
-    def __init__(self, model, datagen = [], optimizer = tf.keras.optimizers.Adam()):
+    def __init__(self, model, datagen = [], type = 'CIFAR10', optimizer = tf.keras.optimizers.Adam()):
         self.model = model
         self.datagen = datagen
         self.Lambda = 0
         self.optimizer = optimizer
         self.accuracy = 0
         self.batch_accuracy = 0
-
+        self.type = type
         self.accuracy_history = []
         self.divergence_loss_history = [0]
         self.supervised_loss_history = []
@@ -114,7 +114,11 @@ class Network:
             aug_image = augmentation_transforms.apply_policy(chosen_policy, x[i])
             # aug_image /= (np.max(aug_image) - np.min(aug_image))
             # aug_image -= np.min(aug_image)
-            aug_x[i] = aug_image
+            if self.type == 'MNIST':
+                temp = aug_image[:, :, 0]
+                aug_x[i] = temp[:,:, np.newaxis]
+            elif self.type == 'CIFAR10':
+                aug_x[i] = aug_image
 
 
         aug_predictions = self.model(aug_x)

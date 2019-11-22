@@ -16,13 +16,19 @@ import parser
 
 parser = parser.GetParser()
 args = parser.parse_args()
+type = args.dataset
 
-
-
-
-(x_train, y_train), (x_test, y_test), = tf.keras.datasets.cifar10.load_data()
+if type == 'CIFAR10':
+    (x_train, y_train), (x_test, y_test), = tf.keras.datasets.cifar10.load_data()
+elif type == 'MNIST':
+    (x_train, y_train), (x_test, y_test), = tf.keras.datasets.mnist.load_data()
 num_classes=10
 split = args.split
+
+
+if np.ndim(x_train) == 3:
+    x_train = x_train[:,:,:,np.newaxis]
+    x_test = x_test[:, :, :, np.newaxis]
 
 y_train = np.squeeze(y_train)
 y_test = np.squeeze(y_test)
@@ -72,7 +78,7 @@ model.add(Activation('softmax'))
 
 
 
-network = Network(model, datagen)
+network = Network(model, datagen, type)
 
 network.train(train_x=Lx,
               train_y=Ly,
@@ -84,7 +90,7 @@ network.train(train_x=Lx,
               TSA = args.TSA,
               usup = args.usup,
               labelled_batch_size=32,
-              unlabelled_batch_size = 256)
+              unlabelled_batch_size = 960)
 
 
 

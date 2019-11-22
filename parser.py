@@ -33,4 +33,10 @@ def GetParser():
                         default = 100,
                         required = False)
 
+    parser.add_argument('--dataset', '-D',
+                        type = str,
+                        default = 'CIFAR10',
+                        help = 'dataset to use, either CIFAR10 or MNIST',
+                        required = False)
+
     return parser
