@@ -86,6 +86,9 @@ class Network:
         # log_p = tf.nn.log_softmax(p_logits)
         # log_q = tf.nn.log_softmax(q_logits)
 
+        log_p = tf.math.log(p_logits)
+        log_q = tf.math.log(q_logits)
+
         kl = tf.reduce_sum(p * (log_p - log_q), -1)
         return kl
 
