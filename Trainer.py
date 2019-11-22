@@ -40,17 +40,16 @@ class Network:
 
     def make_batches(self, train_x, train_y, unlabelled_x, labelled_batch_size, unlabelled_batch_size):
         n_batches = int(np.ceil(np.shape(train_x)[0] / labelled_batch_size))
-
         if not unlabelled_batch_size:
             u_x_batches = np.array_split(unlabelled_x, n_batches)
 
         else:
             u_n_batches = int(np.ceil(np.shape(unlabelled_x)[0] / unlabelled_batch_size))
-            u_x_batches = np.array_split(unlabelled_x, u_n_batches)
 
             if u_n_batches is n_batches:
                 x_batches = np.array_split(train_x, n_batches)
                 y_batches = np.array_split(train_y, n_batches)
+                u_x_batches = np.array_split(unlabelled_x, n_batches)
 
             else:
                 print(
@@ -78,6 +77,8 @@ class Network:
 
                     u_n_batches = int(np.ceil(np.shape(unlabelled_x)[0] / unlabelled_batch_size))
                     u_x_batches = np.array_split(unlabelled_x, u_n_batches)[:n_batches]
+                    x_batches = np.array_split(train_x, n_batches)
+                    y_batches = np.array_split(train_y, n_batches)
 
         return (x_batches, y_batches, u_x_batches, n_batches)
 
