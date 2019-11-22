@@ -11,7 +11,8 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Activation, Dense, Conv2D, MaxPooling2D, Dropout, Flatten, LeakyReLU
 from tensorflow.keras.layers import BatchNormalization
 
-
+f = open('output.txt','w')
+sys.stdout = f
 import parser
 
 parser = parser.GetParser()
