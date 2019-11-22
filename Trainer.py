@@ -119,7 +119,7 @@ class Network:
 
         aug_predictions = self.model(aug_x)
         KLD = self.kl_divergence(predictions, aug_predictions)
-        KLD = tf.reduce_mean(KLD)
+        KLD = tf.reduce_mean(tf.math.abs(KLD))
         return KLD
 
     def global_step(self, Ux, Lx, Ly, lim = 1):

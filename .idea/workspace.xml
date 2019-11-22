@@ -123,7 +123,7 @@
       <option name="presentableId" value="Default" />
       <updated>1574171621931</updated>
       <workItem from="1574171623027" duration="4737000" />
-      <workItem from="1574243222577" duration="39695000" />
+      <workItem from="1574243222577" duration="39986000" />
     </task>
     <task id="LOCAL-00001" summary="deleted unused files">
       <created>1574173828498</created>
@@ -184,8 +184,8 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Trainer.py</url>
-          <line>116</line>
-          <option name="timeStamp" value="72" />
+          <line>91</line>
+          <option name="timeStamp" value="73" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -194,6 +194,6 @@
     <SUITE FILE_PATH="coverage/UDA$kaggle_digit_recognizer.coverage" NAME="kaggle_digit_recognizer Coverage Results" MODIFIED="1574173924571" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/UDA$kaggle.coverage" NAME="kaggle Coverage Results" MODIFIED="1574173201362" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/UDA$tf2_eager.coverage" NAME="tf2_eager Coverage Results" MODIFIED="1574175260390" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/UDA$run.coverage" NAME="run Coverage Results" MODIFIED="1574416041718" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/UDA$run.coverage" NAME="run Coverage Results" MODIFIED="1574425156946" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
