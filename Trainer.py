@@ -109,8 +109,8 @@ class Network:
         for i in range(np.shape(x)[0]):
             chosen_policy = aug_policies[np.random.choice(len(aug_policies))]
             aug_image = augmentation_transforms.apply_policy(chosen_policy, x[i])
-            aug_image /= (np.max(aug_image) - np.min(aug_image))
-            aug_image -= np.min(aug_image)
+            # aug_image /= (np.max(aug_image) - np.min(aug_image))
+            # aug_image -= np.min(aug_image)
             aug_x[i] = aug_image
 
 

@@ -30,7 +30,7 @@ def GetParser():
 
     parser.add_argument('--split',
                         type = int,
-                        default = 100
+                        default = 100,
                         required = False)
 
     return parser
