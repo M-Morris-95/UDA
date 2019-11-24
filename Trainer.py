@@ -16,6 +16,7 @@ class Network:
         self.batch_accuracy = 0
         self.type = type
         self.accuracy_history = []
+        self.console = True
         self.divergence_loss_history = [0]
         self.supervised_loss_history = []
 
@@ -194,15 +195,16 @@ class Network:
                 else:
                     self.sup_step(x_batches[batch], y_batches[batch])
                 self.accuracy = (self.accuracy * batch + self.batch_accuracy)/(batch+1)
-                print('Epoch {epc}/{epc_max} {batch}/{nbatch}, train accuracy:{acc:1.2f}%, '
-                      'L-divergence:{divL:1.3f}, L-cross entropy:{supL:1.3f}, TSA limit:{tsa_lim:1.2f}'.format(epc = (epoch + 1),
-                                                                                  epc_max = epochs,
-                                                                                  batch = (batch + 1),
-                                                                                  nbatch = n_batches,
-                                                                                  acc = self.accuracy,
-                                                                                  divL = self.divergence_loss_history[-1],
-                                                                                  supL = self.supervised_loss_history[-1],
-                                                                                  tsa_lim = nt),
+                if not self.console:
+                    print('Epoch {epc}/{epc_max} {batch}/{nbatch}, train accuracy:{acc:1.2f}%, '
+                          'L-divergence:{divL:1.3f}, L-cross entropy:{supL:1.3f}, TSA limit:{tsa_lim:1.2f}'.format(epc = (epoch + 1),
+                                                                                      epc_max = epochs,
+                                                                                      batch = (batch + 1),
+                                                                                      nbatch = n_batches,
+                                                                                      acc = self.accuracy,
+                                                                                      divL = self.divergence_loss_history[-1],
+                                                                                      supL = self.supervised_loss_history[-1],
+                                                                                      tsa_lim = nt),
                 end='\r')
 
             if val_x.any():
