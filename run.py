@@ -10,9 +10,8 @@ from tensorflow import keras
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Activation, Dense, Conv2D, MaxPooling2D, Dropout, Flatten, LeakyReLU
 from tensorflow.keras.layers import BatchNormalization
+import time, os, fnmatch, shutil, sys
 
-f = open('output.txt','w')
-sys.stdout = f
 import parser
 
 parser = parser.GetParser()
@@ -93,6 +92,15 @@ network.train(train_x=Lx,
               labelled_batch_size=32,
               unlabelled_batch_size = 252)
 
+t = time.localtime()
+timestamp = time.strftime('%b-%d-%Y_%H%M', t)
 
+os.mkdir(timestamp)
+os.chdir(timestamp)
 
+text_file = open("parameters.txt", "w")
+text_file.write(' '.join(sys.argv[1:]))
+text_file.close()
+
+network.history.to_csv (r'export_dataframe.csv', index = None, header=True)
 network.model.save('UDA_Model.hdf5')
