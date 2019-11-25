@@ -73,18 +73,22 @@ class Network:
                         u_n_batches, n_batches))
 
                 if u_n_batches > n_batches:
-                    data_pts_needed = u_n_batches * labelled_batch_size
-                    multiplier = int(np.ceil(data_pts_needed / np.shape(train_x)[0]))
-                    train_y = np.tile(train_y, (multiplier))
-                    train_x = np.tile(train_x, (multiplier, 1, 1, 1))
+                    # data_pts_needed = u_n_batches * labelled_batch_size
+                    # multiplier = int(np.ceil(data_pts_needed / np.shape(train_x)[0]))
+                    # train_y = np.tile(train_y, (multiplier))
+                    # train_x = np.tile(train_x, (multiplier, 1, 1, 1))
+                    #
+                    # train_x, train_y = self.unison_shuffled_copies(train_x, train_y)
+                    #
+                    # n_batches = int(np.ceil(np.shape(train_x)[0] / labelled_batch_size))
+                    # x_batches = np.array_split(train_x, n_batches)[:u_n_batches]
+                    # y_batches = np.array_split(train_y, n_batches)[:u_n_batches]
+                    # u_x_batches = np.array_split(unlabelled_x, u_n_batches)
+                    # n_batches = u_n_batches
 
-                    train_x, train_y = self.unison_shuffled_copies(train_x, train_y)
-
-                    n_batches = int(np.ceil(np.shape(train_x)[0] / labelled_batch_size))
-                    x_batches = np.array_split(train_x, n_batches)[:u_n_batches]
-                    y_batches = np.array_split(train_y, n_batches)[:u_n_batches]
-                    u_x_batches = np.array_split(unlabelled_x, u_n_batches)
-                    n_batches = u_n_batches
+                    x_batches = np.array_split(train_x, n_batches)
+                    y_batches = np.array_split(train_y, n_batches)
+                    u_x_batches = np.array_split(unlabelled_x, u_n_batches)[:n_batches]
 
                 elif u_n_batches < n_batches:
                     data_pts_needed = n_batches * unlabelled_batch_size

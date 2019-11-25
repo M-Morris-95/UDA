@@ -3,11 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="8257a978-0c13-4d53-82ca-c94900d1be8a" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Nov-25-2019_1050/parameters.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/UDA_Model.hdf5" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/export_dataframe.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/output.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/run.py" beforeDir="false" afterPath="$PROJECT_DIR$/run.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Trainer.py" beforeDir="false" afterPath="$PROJECT_DIR$/Trainer.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -143,7 +139,7 @@
       <workItem from="1574598584835" duration="444000" />
       <workItem from="1574672542747" duration="3208000" />
       <workItem from="1574676881958" duration="318000" />
-      <workItem from="1574677606245" duration="1977000" />
+      <workItem from="1574677606245" duration="2398000" />
     </task>
     <task id="LOCAL-00001" summary="deleted unused files">
       <created>1574173828498</created>
@@ -204,12 +200,12 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Trainer.py</url>
-          <line>236</line>
+          <line>240</line>
           <option name="timeStamp" value="90" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Trainer.py</url>
-          <line>210</line>
+          <line>214</line>
           <option name="timeStamp" value="96" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
