@@ -229,7 +229,7 @@ class Network:
                 self.iteration += 1
             if val_x.any():
                 accuracy = self.evaluate(val_x, val_y)
-                self.history.Training_Accuracy[self.iteration-1] = accuracy
+                self.history.Validation_Accuracy[self.iteration-1] = accuracy
 
 
             print('Epoch {epc} {batch}/{nbatch}, train accuracy:{acc:1.2f}%, validation accuracy:{valacc:1.2f}%, '
