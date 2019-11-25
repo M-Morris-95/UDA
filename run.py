@@ -91,7 +91,7 @@ network.train(train_x=Lx,
               TSA = args.TSA,
               usup = args.usup,
               labelled_batch_size=32,
-              unlabelled_batch_size = 960)
+              unlabelled_batch_size = 252)
 
 
 

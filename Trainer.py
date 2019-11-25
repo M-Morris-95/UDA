@@ -68,6 +68,7 @@ class Network:
                     n_batches = int(np.ceil(np.shape(train_x)[0] / labelled_batch_size))
                     x_batches = np.array_split(train_x, n_batches)[:u_n_batches]
                     y_batches = np.array_split(train_y, n_batches)[:u_n_batches]
+                    u_x_batches = np.array_split(unlabelled_x, u_n_batches)
                     n_batches = u_n_batches
 
                 elif u_n_batches < n_batches:
