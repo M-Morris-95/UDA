@@ -144,23 +144,29 @@ class Network:
 
         return tf.reduce_mean(sup_loss)
 
+    def augment(self, x, rangaugment):
+        if rangaugment:
+            aug_x = np.empty(np.shape(x))
+            for i in range(np.shape(x)[0]):
+                chosen_policy = aug_policies[np.random.choice(len(aug_policies))]
+                aug_image = augmentation_transforms.apply_policy(chosen_policy, x[i])
+                if self.type == 'MNIST':
+                    temp = aug_image[:, :, 0]
+                    aug_x[i] = temp[:, :, np.newaxis]
+                elif self.type == 'CIFAR10':
+                    aug_x[i] = aug_image
+        else:
+            aug_x = self.datagen.flow(x, batch_size=32).next()
 
-    def divergence_loss(self, predictions, x):
-        aug_x = np.empty(np.shape(x))
-        for i in range(np.shape(x)[0]):
-            chosen_policy = aug_policies[np.random.choice(len(aug_policies))]
-            aug_image = augmentation_transforms.apply_policy(chosen_policy, x[i])
-            if self.type == 'MNIST':
-                temp = aug_image[:, :, 0]
-                aug_x[i] = temp[:,:, np.newaxis]
-            elif self.type == 'CIFAR10':
-                aug_x[i] = aug_image
+        return aug_x
 
 
+    def divergence_loss(self, predictions, x, randaugment=False):
+        aug_x = self.augment(x, randaugment)
         aug_predictions = self.model(aug_x)
+
         KLD = self.kl_divergence(predictions, aug_predictions)
-        KLD = tf.reduce_mean(tf.math.abs(KLD))
-        return KLD
+        return tf.reduce_mean(tf.math.abs(KLD))
 
     def global_step(self, Ux, Lx, Ly, lim = 1):
         with tf.GradientTape() as tape:
