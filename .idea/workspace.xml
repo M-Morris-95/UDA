@@ -2,86 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8257a978-0c13-4d53-82ca-c94900d1be8a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trainer.py" beforeDir="false" afterPath="$PROJECT_DIR$/Trainer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1131/UDA_Model.hdf5" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1131/history.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1131/parameters.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1143/UDA_Model.hdf5" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1143/history.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1143/parameters.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1151/UDA_Model.hdf5" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1151/history.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1151/parameters.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1159/UDA_Model.hdf5" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1159/history.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1159/parameters.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1207/UDA_Model.hdf5" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1207/history.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1207/parameters.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1214/UDA_Model.hdf5" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1214/history.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1214/parameters.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1224/UDA_Model.hdf5" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1224/history.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1224/parameters.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1230/UDA_Model.hdf5" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1230/history.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1230/parameters.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1240/UDA_Model.hdf5" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1240/history.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1240/parameters.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1245/UDA_Model.hdf5" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1245/history.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1245/parameters.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1251/UDA_Model.hdf5" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1251/history.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1251/parameters.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1302/UDA_Model.hdf5" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1302/history.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1302/parameters.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1313/UDA_Model.hdf5" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1313/history.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1313/parameters.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1316/UDA_Model.hdf5" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1316/history.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1316/parameters.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1318/UDA_Model.hdf5" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1318/history.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1318/parameters.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1320/UDA_Model.hdf5" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1320/history.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1320/parameters.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1322/UDA_Model.hdf5" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1322/history.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1322/parameters.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1324/UDA_Model.hdf5" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1324/history.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1324/parameters.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1326/UDA_Model.hdf5" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1326/history.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1326/parameters.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1331/UDA_Model.hdf5" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1331/history.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1331/parameters.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1343/UDA_Model.hdf5" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1343/history.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1343/parameters.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1354/UDA_Model.hdf5" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1354/history.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1354/parameters.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1406/UDA_Model.hdf5" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1406/history.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1406/parameters.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1418/UDA_Model.hdf5" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1418/history.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1418/parameters.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1429/UDA_Model.hdf5" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1429/history.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1429/parameters.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1441/UDA_Model.hdf5" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1441/history.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logging/Nov-25-2019_1441/parameters.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/run.py" beforeDir="false" afterPath="$PROJECT_DIR$/run.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -216,7 +136,7 @@
       <workItem from="1574672542747" duration="3208000" />
       <workItem from="1574676881958" duration="318000" />
       <workItem from="1574677606245" duration="4529000" />
-      <workItem from="1574696554408" duration="554000" />
+      <workItem from="1574696554408" duration="774000" />
     </task>
     <task id="LOCAL-00001" summary="deleted unused files">
       <created>1574173828498</created>
