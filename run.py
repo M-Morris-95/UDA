@@ -95,6 +95,7 @@ network.train(train_x=Lx,
 t = time.localtime()
 timestamp = time.strftime('%b-%d-%Y_%H%M', t)
 
+os.chdir('logging')
 os.mkdir(timestamp)
 os.chdir(timestamp)
 

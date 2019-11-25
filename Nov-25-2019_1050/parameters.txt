@@ -1,1 +1,0 @@
---dataset=MNIST --usup --split=60 --TSA=linear --Lambda=3 --epochs=10
