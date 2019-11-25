@@ -156,7 +156,7 @@ class Network:
                 elif self.type == 'CIFAR10':
                     aug_x[i] = aug_image
         else:
-            aug_x = self.datagen.flow(x, batch_size=32).next()
+            aug_x = self.datagen.flow(x, batch_size=32, shuffle=False).next()
 
         return aug_x
 

@@ -50,7 +50,7 @@ datagen = ImageDataGenerator(
         samplewise_center=False,  # set each sample mean to 0
         featurewise_std_normalization=False,  # divide inputs by std of the dataset
         samplewise_std_normalization=False,  # divide each input by its std
-        zca_whitening=True,  # apply ZCA whitening
+        zca_whitening=False,  # apply ZCA whitening
         zca_epsilon=1e-06,  # epsilon for ZCA whitening
         rotation_range=30,  # randomly rotate images in the range (degrees, 0 to 180)
         # randomly shift images horizontally (fraction of total width)
@@ -59,7 +59,7 @@ datagen = ImageDataGenerator(
         height_shift_range=0.2,
         shear_range=0.3,  # set range for random shear
         zoom_range=0.2,  # set range for random zoom
-        channel_shift_range=0.2,  # set range for random channel shifts
+        channel_shift_range=0,  # set range for random channel shifts
         # set mode for filling points outside the input boundaries
         fill_mode='nearest',
         cval=0.,  # value used for fill_mode = "constant"
