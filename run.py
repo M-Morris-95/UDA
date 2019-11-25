@@ -102,5 +102,5 @@ text_file = open("parameters.txt", "w")
 text_file.write(' '.join(sys.argv[1:]))
 text_file.close()
 
-network.history.to_csv (r'export_dataframe.csv', index = None, header=True)
+network.history.to_csv (r'history.csv', index = None, header=True)
 network.model.save('UDA_Model.hdf5')
