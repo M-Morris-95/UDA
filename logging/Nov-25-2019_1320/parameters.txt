@@ -1,0 +1,1 @@
+--dataset=MNIST --split=60 --epochs=20 --n_batch=8 --u_n_batch=128 --Lambda=1 --usup --TSA=log

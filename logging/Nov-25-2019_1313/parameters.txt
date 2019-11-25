@@ -1,0 +1,1 @@
+--dataset=MNIST --split=60 --epochs=20 --n_batch=8

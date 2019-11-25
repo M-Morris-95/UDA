@@ -1,0 +1,1 @@
+--dataset=CIFAR10 --split=4000 --epochs=20
