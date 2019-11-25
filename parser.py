@@ -39,4 +39,16 @@ def GetParser():
                         help = 'dataset to use, either CIFAR10 or MNIST',
                         required = False)
 
+    parser.add_argument('--u_n_batch',
+                        type = int,
+                        default = 225,
+                        help = 'batch size for unlabelled samples',
+                        required = False)
+
+    parser.add_argument('--n_batch',
+                        type = int,
+                        default = 32,
+                        help = 'batch size for labelled samples',
+                        required = False)
+
     return parser

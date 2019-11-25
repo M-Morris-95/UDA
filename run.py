@@ -89,8 +89,8 @@ network.train(train_x=Lx,
               Lambda=args.Lambda,
               TSA = args.TSA,
               usup = args.usup,
-              labelled_batch_size=8,
-              unlabelled_batch_size = 252)
+              labelled_batch_size = args.n_batch,
+              unlabelled_batch_size = args.n_batch)
 
 t = time.localtime()
 timestamp = time.strftime('%b-%d-%Y_%H%M', t)

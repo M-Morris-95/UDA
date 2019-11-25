@@ -1,3 +1,4 @@
+#!/bin/bash
 python3 run.py --dataset=MNIST --split=60 --epochs=20 --n_batch=8
 python3 run.py --dataset=MNIST --split=60 --epochs=20 --n_batch=8 --u_n_batch=128 --Lambda=1 --usup --TSA=exponential 
 python3 run.py --dataset=MNIST --split=60 --epochs=20 --n_batch=8 --u_n_batch=128 --Lambda=1 --usup --TSA=linear 
