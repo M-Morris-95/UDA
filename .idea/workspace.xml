@@ -72,9 +72,6 @@
       <module name="UDA" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
       <option name="SDK_HOME" value="$PROJECT_DIR$/../../Python3/tf2_env/bin/python3.7" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="false" />
@@ -82,7 +79,7 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/run.py" />
-      <option name="PARAMETERS" value="--dataset=MNIST --usup --split=60 --TSA=linear --Lambda=3 --epochs=10" />
+      <option name="PARAMETERS" value="--dataset=MNIST --split=60 --TSA=linear --Lambda=30 --epochs=40" />
       <option name="SHOW_COMMAND_LINE" value="true" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
@@ -139,7 +136,7 @@
       <workItem from="1574598584835" duration="444000" />
       <workItem from="1574672542747" duration="3208000" />
       <workItem from="1574676881958" duration="318000" />
-      <workItem from="1574677606245" duration="2644000" />
+      <workItem from="1574677606245" duration="3054000" />
     </task>
     <task id="LOCAL-00001" summary="deleted unused files">
       <created>1574173828498</created>
@@ -169,7 +166,14 @@
       <option name="project" value="LOCAL" />
       <updated>1574258319448</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="removed error in print message">
+      <created>1574680959379</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1574680959379</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -193,25 +197,21 @@
     <MESSAGE value="added kaggle file" />
     <MESSAGE value="moved UDA functions to seperate file" />
     <MESSAGE value="created object oriented UDA program" />
-    <option name="LAST_COMMIT_MESSAGE" value="created object oriented UDA program" />
+    <MESSAGE value="removed error in print message" />
+    <option name="LAST_COMMIT_MESSAGE" value="removed error in print message" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Trainer.py</url>
-          <line>240</line>
+          <line>243</line>
           <option name="timeStamp" value="90" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Trainer.py</url>
-          <line>214</line>
-          <option name="timeStamp" value="96" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/run.py</url>
-          <line>82</line>
-          <option name="timeStamp" value="97" />
+          <line>234</line>
+          <option name="timeStamp" value="98" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -220,6 +220,6 @@
     <SUITE FILE_PATH="coverage/UDA$kaggle_digit_recognizer.coverage" NAME="kaggle_digit_recognizer Coverage Results" MODIFIED="1574173924571" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/UDA$kaggle.coverage" NAME="kaggle Coverage Results" MODIFIED="1574173201362" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/UDA$tf2_eager.coverage" NAME="tf2_eager Coverage Results" MODIFIED="1574175260390" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/UDA$run.coverage" NAME="run Coverage Results" MODIFIED="1574679614167" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/UDA$run.coverage" NAME="run Coverage Results" MODIFIED="1574682357960" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

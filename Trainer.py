@@ -45,9 +45,12 @@ class Network:
         with tf.GradientTape() as tape:
             predictions = self.model(Lx, training=True)
             loss = self.categorical_cross_entropy(predictions, Ly, lim=1)
-            self.supervised_loss_history.append(loss.numpy())
-            predictions = tf.math.argmax(predictions, axis=1)
-            self.batch_accuracy = (tf.reduce_mean(tf.cast(tf.equal(predictions, Ly), tf.float32)) * 100).numpy()
+        predictions = tf.math.argmax(predictions, axis=1)
+
+        self.history.Divergence_Loss[self.iteration] = loss.numpy()
+        self.history.Training_Accuracy[self.iteration] = (
+                    tf.reduce_mean(tf.cast(tf.equal(predictions, Ly), tf.float32)) * 100).numpy()
+
 
         var_list = self.model.trainable_variables
         grads = tape.gradient(loss, var_list)
