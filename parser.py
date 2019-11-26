@@ -45,6 +45,12 @@ def GetParser():
                         help = 'batch size for unlabelled samples',
                         required = False)
 
+    parser.add_argument('--Temp',
+                        type=float,
+                        default=0.5,
+                        help='sharpening temp',
+                        required=False)
+
     parser.add_argument('--n_batch',
                         type = int,
                         default = 32,

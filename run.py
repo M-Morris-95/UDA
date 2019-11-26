@@ -119,7 +119,8 @@ network.train(train_x=Lx,
               TSA = args.TSA,
               mode = args.Mode,
               labelled_batch_size = args.n_batch,
-              unlabelled_batch_size = args.n_batch)
+              unlabelled_batch_size = args.n_batch,
+              T=args.Temp)
 
 t = time.localtime()
 timestamp = time.strftime('%b-%d-%Y_%H%M', t)

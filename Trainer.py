@@ -202,7 +202,7 @@ class Network:
 
 
 
-    def MixMatch(self, Ux, Lx, Ly, K=3, num_labels = 10):
+    def MixMatch(self, Ux, Lx, Ly, K=3, num_labels = 10, T=0.5):
         Lx = self.datagen.flow(Lx, batch_size=32, shuffle=False).next()
         Ly = tf.one_hot(Ly, num_labels).numpy()
 
@@ -214,7 +214,8 @@ class Network:
         U = U.reshape(-1, U.shape[2], U.shape[3], U.shape[4])
 
         Q = tf.reduce_mean(tf.stack(Q), axis=0)
-        Q = tf.tile(self.Sharpen(Q, T=0.5), [K, 1])
+        sharp = self.Sharpen(Q, T=T)
+        Q = tf.tile(sharp, [K, 1])
 
         y = np.row_stack((Ly, Q.numpy()))
         x = np.row_stack((Lx, U))
@@ -226,9 +227,9 @@ class Network:
         return(xl, yl, xu, yu)
 
 
-    def MixMatchStep(self, Ux, Lx, Ly, K=2, num_labels=10):
+    def MixMatchStep(self, Ux, Lx, Ly, K=2, num_labels=10, T=0.5):
         Lambda_u = self.Lambda
-        xl, yl, xu, yu = self.MixMatch(Ux, Lx, Ly, K=K, num_labels=num_labels)
+        xl, yl, xu, yu = self.MixMatch(Ux, Lx, Ly, K=K, num_labels=num_labels, T = T)
         with tf.GradientTape() as tape:
 
             Lpred = self.model(xl, training=True)
@@ -253,9 +254,10 @@ class Network:
 
 
     def train(self, train_x, train_y, unlabelled_x = 0, val_x=[], val_y=[], epochs=10, Lambda=1, labelled_batch_size=32,
-              unlabelled_batch_size=[], TSA = False, mode = 'Supervised'):
+              unlabelled_batch_size=[], TSA = False, mode = 'Supervised', T=0.5):
         self.mode = mode
         self.Lambda = Lambda
+        self.T = T
         x_batches, y_batches, u_x_batches, n_batches = self.make_batches(train_x, train_y, unlabelled_x,
                                                                          labelled_batch_size, unlabelled_batch_size)
 
@@ -277,7 +279,7 @@ class Network:
                 if self.mode == 'UDA':
                     self.global_step(u_x_batches[batch], x_batches[batch], y_batches[batch], lim = nt)
                 elif self.mode == 'MixMatch':
-                    self.MixMatchStep(u_x_batches[batch], x_batches[batch], y_batches[batch])
+                    self.MixMatchStep(u_x_batches[batch], x_batches[batch], y_batches[batch], T=1.1-nt)
                 elif self.mode == 'Supervised':
                     self.sup_step(x_batches[batch], y_batches[batch])
                 else:
