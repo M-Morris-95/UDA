@@ -1,5 +1,4 @@
 #!/bin/bash
-python3 run.py  --dataset=CIFAR10  --split=4000 --epochs=40 --n_batch=16
 
 python3 run.py  --dataset=CIFAR10  --usup --split=4000 --TSA=linear --Lambda=1.5 --epochs=40 --u_n_batch=32 --n_batch=16
 python3 run.py  --dataset=CIFAR10  --usup --split=4000 --TSA=linear --Lambda=1.5 --epochs=40 --u_n_batch=32 --n_batch=32

@@ -171,7 +171,8 @@ class Network:
     def global_step(self, Ux, Lx, Ly, lim = 1):
         with tf.GradientTape() as tape:
             predictions = self.model(Ux, training=True)
-            Uloss = self.Lambda * self.divergence_loss(predictions, Ux)
+            Uloss = self.Lambda * self.divergence_loss\
+                (predictions, Ux)
 
 
             predictions = self.model(Lx, training=True)
