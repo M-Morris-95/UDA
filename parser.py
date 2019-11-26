@@ -22,9 +22,9 @@ def GetParser():
                         default=False,
                         required=False)
 
-    parser.add_argument('--usup', '-U',
-                        action="store_true",
-                        help='Train on unsupervised data',
+    parser.add_argument('--Mode', '-M',
+                        type = str,
+                        help='Training mode, MixMatch, UDA, Supervised',
                         default=False,
                         required=False)
 

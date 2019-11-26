@@ -132,14 +132,15 @@ class Network:
         kl = tf.reduce_sum(p * (log_p - log_q), -1)
         return kl
 
-    def categorical_cross_entropy(self, predictions, labels, lim = 1, num_labels=10):
+    def categorical_cross_entropy(self, predictions, labels, lim = 1, num_labels=10, OneHot = False):
 
-        OHlabels = tf.one_hot(labels, num_labels)
+        if not OneHot:
+            labels = tf.one_hot(labels, num_labels)
 
-        correct_confidence = tf.reduce_max(OHlabels * predictions, axis=1)
+        correct_confidence = tf.reduce_max(labels * predictions, axis=1)
         correct_confidence = tf.squeeze([tf.where(correct_confidence < lim)])
 
-        sup_loss = OHlabels * -tf.math.log(predictions)
+        sup_loss = labels * -tf.math.log(predictions)
         sup_loss = tf.gather(sup_loss, correct_confidence.numpy())
 
         return tf.reduce_mean(sup_loss)
@@ -171,8 +172,7 @@ class Network:
     def global_step(self, Ux, Lx, Ly, lim = 1):
         with tf.GradientTape() as tape:
             predictions = self.model(Ux, training=True)
-            Uloss = self.Lambda * self.divergence_loss\
-                (predictions, Ux)
+            Uloss = self.Lambda * self.divergence_loss(predictions, Ux)
 
 
             predictions = self.model(Lx, training=True)
@@ -185,6 +185,64 @@ class Network:
         self.history.Training_Accuracy[self.iteration] = (tf.reduce_mean(tf.cast(tf.equal(predictions, Ly), tf.float32)) * 100).numpy()
 
 
+        var_list = self.model.trainable_variables
+        grads = tape.gradient(loss, var_list)
+
+        self.optimizer.apply_gradients(zip(grads, var_list))
+
+    def Sharpen(self, P, T):
+        return tf.pow(P, 1 / T) / tf.reshape(tf.reduce_sum(tf.pow(P, 1 / T), axis=1), (-1, 1))
+
+    def MixUp(self, X1, X2, Y1, Y2, Lambda = 0.6):
+        Lambda = max([Lambda, 1-Lambda])
+        size = min(X1.shape[0], X2.shape[0], Y1.shape[0], Y2.shape[0])
+        X = Lambda * X1[:size] + (1 - Lambda) * X2[:size]
+        Y = Lambda * Y1[:size] + (1 - Lambda) * Y2[:size]
+        return X, Y
+
+
+
+    def MixMatch(self, Ux, Lx, Ly, K=3, num_labels = 10):
+        Lx = self.datagen.flow(Lx, batch_size=32, shuffle=False).next()
+        Ly = tf.one_hot(Ly, num_labels).numpy()
+
+        U = np.zeros([K, np.shape(Ux)[0], np.shape(Ux)[1], np.shape(Ux)[2], np.shape(Ux)[3]])
+        Q = []
+        for k in range(K):
+            U[k] = self.datagen.flow(Ux, batch_size=32, shuffle=False).next()
+            Q.append(self.model(U[k], training=True))
+        U = U.reshape(-1, U.shape[2], U.shape[3], U.shape[4])
+
+        Q = tf.reduce_mean(tf.stack(Q), axis=0)
+        Q = tf.tile(self.Sharpen(Q, T=0.5), [K, 1])
+
+        y = np.row_stack((Ly, Q.numpy()))
+        x = np.row_stack((Lx, U))
+
+        x, y = self.unison_shuffled_copies(x, y)
+
+        xl, yl = self.MixUp(Lx, x[:Ly.shape[0]], Ly, y[:Ly.shape[0]], Lambda = 0.6)
+        xu, yu = self.MixUp(Ux, x[Ly.shape[0]:], Q, y[Ly.shape[0]:], Lambda = 0.6)
+        return(xl, yl, xu, yu)
+
+
+    def MixMatchStep(self, Ux, Lx, Ly, K=2, num_labels=10, Lambda_u=100):
+        xl, yl, xu, yu = self.MixMatch(Ux, Lx, Ly, K=K, num_labels=num_labels)
+        with tf.GradientTape() as tape:
+
+            Lpred = self.model(xl, training=True)
+            Lloss = self.categorical_cross_entropy(Lpred, yl, lim=1, OneHot = True)
+
+            Upred = self.model(xu, training=True)
+            Uloss = tf.reduce_mean(tf.square(yu - Upred))
+
+            loss = Lloss + Lambda_u * Uloss
+
+        predictions = tf.math.argmax(Lpred, axis=1)
+
+        self.history.Divergence_Loss[self.iteration] = Uloss.numpy()
+        self.history.Supervised_Loss[self.iteration] = Lloss.numpy()
+        self.history.Training_Accuracy[self.iteration] = (tf.reduce_mean(tf.cast(tf.equal(predictions, Ly), tf.float32)) * 100).numpy()
 
 
         var_list = self.model.trainable_variables
@@ -193,10 +251,9 @@ class Network:
         self.optimizer.apply_gradients(zip(grads, var_list))
 
 
-
     def train(self, train_x, train_y, unlabelled_x = 0, val_x=[], val_y=[], epochs=10, Lambda=1, labelled_batch_size=32,
-              unlabelled_batch_size=[], TSA = False, usup = True):
-        self.usup = usup
+              unlabelled_batch_size=[], TSA = False, mode = 'Supervised'):
+        self.mode = mode
         self.Lambda = Lambda
         x_batches, y_batches, u_x_batches, n_batches = self.make_batches(train_x, train_y, unlabelled_x,
                                                                          labelled_batch_size, unlabelled_batch_size)
@@ -215,10 +272,17 @@ class Network:
 
                 nt = self.TSA(TSA)
                 self.history.TSA_Limit[self.iteration] = nt
-                if self.usup:
+
+                if self.mode == 'UDA':
                     self.global_step(u_x_batches[batch], x_batches[batch], y_batches[batch], lim = nt)
-                else:
+                elif self.mode == 'MixMatch':
+                    self.MixMatchStep(u_x_batches[batch], x_batches[batch], y_batches[batch])
+                elif self.mode == 'Supervised':
                     self.sup_step(x_batches[batch], y_batches[batch])
+                else:
+                    print('undefined training mode, should be UDA, MixMatch, or Supervised')
+                    break
+
                 self.accuracy = (self.accuracy * batch + self.history.Training_Accuracy[self.iteration])/(batch+1)
                 self.history.Weighted_Training_Accuracy[self.iteration] = self.accuracy
 
@@ -233,6 +297,7 @@ class Network:
                                                                                   supL = self.history.Supervised_Loss[self.iteration],
                                                                                   tsa_lim = nt),
                 end='\r')
+
                 self.iteration += 1
             if val_x.any():
                 accuracy = self.evaluate(val_x, val_y)

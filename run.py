@@ -117,7 +117,7 @@ network.train(train_x=Lx,
               epochs=args.epochs,
               Lambda=args.Lambda,
               TSA = args.TSA,
-              usup = args.usup,
+              mode = args.Mode,
               labelled_batch_size = args.n_batch,
               unlabelled_batch_size = args.n_batch)
 
