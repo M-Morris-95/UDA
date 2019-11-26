@@ -311,6 +311,6 @@ class Network:
                                                                                             nbatch=n_batches,
                                                                                             acc=self.accuracy,
                                                                                             valacc=accuracy,
-                                                                                            divL=self.history.Divergence_Loss[self.iteration-1],
-                                                                                            supL=self.history.Supervised_Loss[self.iteration-1],
+                                                                                            divL=np.mean(self.history.Divergence_Loss[self.iteration-n_batches: self.iteration-1]),
+                                                                                            supL=np.mean(self.history.Supervised_Loss[self.iteration-n_batches: self.iteration-1]),
                                                                                             tsa_lim=nt))

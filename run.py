@@ -11,10 +11,9 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Activation, Dense, Conv2D, MaxPooling2D, Dropout, Flatten, LeakyReLU
 from tensorflow.keras.layers import BatchNormalization
 import time, os, fnmatch, shutil, sys
-
 import parser
 
-tf.enable_eager_execution()
+
 parser = parser.GetParser()
 args = parser.parse_args()
 type = args.dataset
