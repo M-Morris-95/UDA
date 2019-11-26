@@ -226,7 +226,8 @@ class Network:
         return(xl, yl, xu, yu)
 
 
-    def MixMatchStep(self, Ux, Lx, Ly, K=2, num_labels=10, Lambda_u=100):
+    def MixMatchStep(self, Ux, Lx, Ly, K=2, num_labels=10):
+        Lambda_u = self.Lambda
         xl, yl, xu, yu = self.MixMatch(Ux, Lx, Ly, K=K, num_labels=num_labels)
         with tf.GradientTape() as tape:
 
