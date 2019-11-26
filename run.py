@@ -14,6 +14,7 @@ import time, os, fnmatch, shutil, sys
 
 import parser
 
+tf.enable_eager_execution()
 parser = parser.GetParser()
 args = parser.parse_args()
 type = args.dataset
