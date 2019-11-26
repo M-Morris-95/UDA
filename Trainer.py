@@ -235,9 +235,9 @@ class Network:
             Lloss = self.categorical_cross_entropy(Lpred, yl, lim=1, OneHot = True)
 
             Upred = self.model(xu, training=True)
-            Uloss = tf.reduce_mean(tf.square(yu - Upred))
+            Uloss = Lambda_u * tf.reduce_mean(tf.square(yu - Upred))
 
-            loss = Lloss + Lambda_u * Uloss
+            loss = Lloss + Uloss
 
         predictions = tf.math.argmax(Lpred, axis=1)
 
