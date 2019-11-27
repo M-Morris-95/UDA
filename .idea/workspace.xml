@@ -3,9 +3,12 @@
   <component name="ChangeListManager">
     <list default="true" id="8257a978-0c13-4d53-82ca-c94900d1be8a" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trainer.py" beforeDir="false" afterPath="$PROJECT_DIR$/Trainer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/parser.py" beforeDir="false" afterPath="$PROJECT_DIR$/parser.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/run.py" beforeDir="false" afterPath="$PROJECT_DIR$/run.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Kaggle_mnist_competition_network_98.54_accuracy/kaggle_digit_recognizer.py" beforeDir="false" afterPath="$PROJECT_DIR$/Kaggle_mnist_competition_network_98.54_accuracy/kaggle_digit_recognizer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/writeup/UDA Experiments.aux" beforeDir="false" afterPath="$PROJECT_DIR$/writeup/UDA Experiments.aux" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/writeup/UDA Experiments.log" beforeDir="false" afterPath="$PROJECT_DIR$/writeup/UDA Experiments.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/writeup/UDA Experiments.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/writeup/UDA Experiments.pdf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/writeup/UDA Experiments.synctex.gz" beforeDir="false" afterPath="$PROJECT_DIR$/writeup/UDA Experiments.synctex.gz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/writeup/UDA Experiments.tex" beforeDir="false" afterPath="$PROJECT_DIR$/writeup/UDA Experiments.tex" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -47,7 +50,29 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.run">
+  <component name="RunManager" selected="Python.kaggle_digit_recognizer (1)">
+    <configuration name="kaggle_digit_recognizer (1)" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="UDA" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Kaggle_mnist_competition_network_98.54_accuracy" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Kaggle_mnist_competition_network_98.54_accuracy/kaggle_digit_recognizer.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="kaggle_digit_recognizer" type="PythonConfigurationType" factoryName="Python">
       <module name="UDA" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -115,9 +140,11 @@
       <item itemvalue="Python.kaggle_digit_recognizer" />
       <item itemvalue="Python.run" />
       <item itemvalue="Python.tf2_eager" />
+      <item itemvalue="Python.kaggle_digit_recognizer (1)" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.kaggle_digit_recognizer (1)" />
         <item itemvalue="Python.tf2_eager" />
       </list>
     </recent_temporary>
@@ -232,6 +259,7 @@
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/UDA$kaggle_digit_recognizer.coverage" NAME="kaggle_digit_recognizer Coverage Results" MODIFIED="1574173924571" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/UDA$kaggle.coverage" NAME="kaggle Coverage Results" MODIFIED="1574173201362" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/UDA$kaggle_digit_recognizer__1_.coverage" NAME="kaggle_digit_recognizer (1) Coverage Results" MODIFIED="1574865845749" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Kaggle_mnist_competition_network_98.54_accuracy" />
     <SUITE FILE_PATH="coverage/UDA$tf2_eager.coverage" NAME="tf2_eager Coverage Results" MODIFIED="1574175260390" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/UDA$run.coverage" NAME="run Coverage Results" MODIFIED="1574769619804" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>

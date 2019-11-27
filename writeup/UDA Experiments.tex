@@ -81,10 +81,13 @@ shuffle and split into batches\;
 \subsection{Experiments}
 Experiments were carried out on the MNIST and CIFAR10 datasets, a convolutional neural network with 3 convolutional layers, 1 hidden layer and a softmax output layer was used for both, the only difference being the shape of the inputs (MNIST: 28,28,1,   CIFAR10: 32,32,3). 
 \subsubsection{MNIST}
-The MNIST dataset was split into 42000 training samples, and 18000 testing samples, within the training set 10\% was reserved for cross validation. With a fully supervised learning using cross entropy as the loss function an error rate of 0.458\% was achieved. The same network was trained with a labelled/unlabelled split of 200/41800 and achieved a semi supervised error rate of 16\%
+The MNIST dataset was split into 42000 training samples, and 18000 testing samples, within the training set 10\% was reserved for cross validation. With a fully supervised learning using cross entropy as the loss function an error rate of 0.458\% was achieved. The same network was trained with a labelled/unlabelled split of 60/41800 and achieved a semi supervised error rate of 22\%, The supervised learning model achieved similar results with the same error rate of 22\%
 
 \subsection{CIFAR10}
 The CIFAR10 dataset was split into 10000 test samples and 50000 training samples where 4000 are labelled and 46000 unlabelled to replicate the experiments in the original paper. 
-With this sized labelled dataset it was found that a logarithmic TSA signal gave the best results while an exponential signal increased overfitting. The best semi-supervised results obtained were a 52\% error rate on the validation set - considerably less than the 4\% error rate obtained in the original paper. Using this same split and dropping all of the unlabelled results gave an error rate of 
+With this sized labelled dataset it was found that a logarithmic TSA signal gave the best results while an exponential signal increased overfitting. The best semi-supervised results obtained were a 52\% error rate on the validation set - considerably less than the 4\% error rate obtained in the original paper. Using this same split and dropping all of the unlabelled results gave an equal error rate of 52\%. For both these models different hyper-parameters were trialled without success.
+
+\subsection{future work}
+There must be errors in the code, the same experiments will be carried out using the code written by the research team at Google on a much larger network. A similar method called MixMatch will be tried, this combines MixUp, UDA, and a sharpening algorithm, once again initial tests of this algorithm were not promising. 
 
 \end{document}

@@ -1,7 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 import numpy as np
 import tensorflow as tf
-from Losses import LLoss, ULoss, ULoss2, evaluate, aug_loss
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 import numpy as np
 
@@ -23,17 +22,23 @@ aug = ImageDataGenerator(
     horizontal_flip=False,
     vertical_flip=False)
 
-train = pd.read_csv('data/train.csv')
+# train = pd.read_csv('data/train.csv')
+#
+# y_train = train.label.values
+# x_train = train.drop(['label'], axis = 1)
+#
+# x_train = np.reshape(x_train.values, (-1,28,28))
+# x_train = x_train[:,:,:,np.newaxis]
+#
+# x_test = pd.read_csv('data/test.csv')
+# x_test = np.reshape(x_test.values, (-1,28,28))
+# x_test = x_test[:,:,:,np.newaxis]
 
-y_train = train.label.values
-x_train = train.drop(['label'], axis = 1)
 
-x_train = np.reshape(x_train.values, (-1,28,28))
-x_train = x_train[:,:,:,np.newaxis]
-
-x_test = pd.read_csv('data/test.csv')
-x_test = np.reshape(x_test.values, (-1,28,28))
-x_test = x_test[:,:,:,np.newaxis]
+(x_train, y_train), (x_test, y_test), = tf.keras.datasets.mnist.load_data()
+if np.ndim(x_train) == 3:
+    x_train = x_train[:,:,:,np.newaxis]
+    x_test = x_test[:, :, :, np.newaxis]
 
 x_train = x_train/255
 x_test = x_test/255
@@ -43,6 +48,9 @@ y_val = y_train[:4200]
 
 x_train = x_train[4200:]
 y_train = y_train[4200:]
+
+
+
 
 aug = ImageDataGenerator(
         rotation_range=10,
