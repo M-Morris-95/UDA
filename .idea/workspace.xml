@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="8257a978-0c13-4d53-82ca-c94900d1be8a" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/SimpleAugment.py" beforeDir="false" afterPath="$PROJECT_DIR$/SimpleAugment.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/simple_network.py" beforeDir="false" afterPath="$PROJECT_DIR$/simple_network.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
