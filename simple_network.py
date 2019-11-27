@@ -4,9 +4,10 @@ import pandas as pd
 
 
 class Simple_Consistency_Regularisation:
-    def __init__(self, model, epochs=10, usup_weight=100, n_batch=32, u_n_batch=32, datagen=[], optimizer=tf.keras.optimizers.Adam()):
+    def __init__(self, model, epochs=10, usup_weight=100, n_batch=32, u_n_batch=32, datagen=[], optimizer=tf.keras.optimizers.Adam(), KL_D = False):
         self.model = model
         self.Epochs = epochs
+        self.KL_D = KL_D
         self.usup_weight = usup_weight
         self.n_batch = n_batch
         self.u_n_batch = u_n_batch
@@ -121,8 +122,10 @@ class Simple_Consistency_Regularisation:
             logits_xu = self.model(xu, training=True)
 
             self.loss_xe = tf.nn.softmax_cross_entropy_with_logits(labels=yl, logits=logits_xl)
-            self.loss_l2u = self._kl_divergence_with_logits(logits_xu, logits_xu_aug)
-            # self.loss_l2u = tf.square(tf.nn.softmax(logits_xu) - tf.nn.softmax(logits_xu_aug))
+            if self.KL_D:
+                self.loss_l2u = self._kl_divergence_with_logits(logits_xu, logits_xu_aug)
+            else:
+                self.loss_l2u = tf.square(tf.nn.softmax(logits_xu) - tf.nn.softmax(logits_xu_aug))
 
             self.loss_xe = tf.reduce_mean(self.loss_xe)
             self.loss_l2u = tf.reduce_mean(self.loss_l2u)

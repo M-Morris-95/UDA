@@ -35,5 +35,5 @@ model.add(Dropout(0.5))
 model.add(Dense(10))
 
 
-network = Simple_Consistency_Regularisation(model, datagen=datagen)
+network = Simple_Consistency_Regularisation(model, datagen=datagen, KL_D=False)
 network.train(model, xl_train, yl_train, xu_train, x_val, y_val)
