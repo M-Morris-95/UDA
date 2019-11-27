@@ -134,8 +134,8 @@ class Simple_Consistency_Regularisation:
         return
 
     def evaluate(self, x_val, y_val, batch_size=32):
-        logits = self.predict(x_val, batch_size=batch_size)
-        y_pred=tf.nn.softmax(logits)
+        y_pred = self.predict(x_val, batch_size=batch_size)
+
         accuracy = (tf.reduce_mean(tf.cast(tf.equal(y_pred, y_val), tf.float32)) * 100).numpy()
         return accuracy
 
@@ -144,6 +144,6 @@ class Simple_Consistency_Regularisation:
         x_batches = np.array_split(x, n_batches)
         predictions = np.array([])
         for batch in x_batches:
-            batch_pred = tf.math.argmax(self.model(batch), axis=1)
+            batch_pred = tf.math.argmax(tf.nn.softmax(self.model(batch)), axis=1)
             predictions = np.append(predictions, batch_pred.numpy())
         return predictions
