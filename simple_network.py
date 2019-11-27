@@ -57,14 +57,6 @@ class Simple_Consistency_Regularisation:
             self.val_accuracy = self.evaluate(x_val, y_val)
             self.create_history(eol=True)
 
-
-    def MixUp(self, X1, X2, Y1, Y2, Lambda=0.6):
-        Lambda = max([Lambda, 1 - Lambda])
-        size = min(X1.shape[0], X2.shape[0], Y1.shape[0], Y2.shape[0])
-        X = Lambda * X1[:size] + (1 - Lambda) * X2[:size]
-        Y = Lambda * Y1[:size] + (1 - Lambda) * Y2[:size]
-        return X, Y
-
     def create_history(self, eol):
         if not self.history_created:
             self.history_created = True
@@ -142,7 +134,8 @@ class Simple_Consistency_Regularisation:
         return
 
     def evaluate(self, x_val, y_val, batch_size=32):
-        y_pred = self.predict(x_val, batch_size=batch_size)
+        logits = self.predict(x_val, batch_size=batch_size)
+        y_pred=tf.nn.softmax(logits)
         accuracy = (tf.reduce_mean(tf.cast(tf.equal(y_pred, y_val), tf.float32)) * 100).numpy()
         return accuracy
 

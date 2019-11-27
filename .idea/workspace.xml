@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="8257a978-0c13-4d53-82ca-c94900d1be8a" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SimpleAugment.py" beforeDir="false" afterPath="$PROJECT_DIR$/SimpleAugment.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/simple_network.py" beforeDir="false" afterPath="$PROJECT_DIR$/simple_network.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -279,12 +280,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/simple_network.py</url>
-          <line>68</line>
+          <line>60</line>
           <option name="timeStamp" value="134" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/simple_network.py</url>
-          <line>132</line>
+          <line>124</line>
           <option name="timeStamp" value="135" />
         </line-breakpoint>
       </breakpoints>
