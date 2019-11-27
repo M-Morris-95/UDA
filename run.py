@@ -29,7 +29,7 @@ split = args.split
 if np.ndim(x_train) == 3:
     x_train = x_train[:,:,:,np.newaxis]
     x_test = x_test[:, :, :, np.newaxis]
-
+num_classes=10
 y_train = np.squeeze(y_train)
 y_test = np.squeeze(y_test)
 x_train=x_train/np.max(x_train)
