@@ -1,7 +1,8 @@
 import tensorflow as tf
 import numpy as np
 import pandas as pd
-
+import time
+import datetime
 
 class Semi_Supervised_Trainer:
     def __init__(self, model, args, datagen=[], optimizer=tf.keras.optimizers.Adam()):
@@ -57,8 +58,10 @@ class Semi_Supervised_Trainer:
 
         for self.epoch in range(self.Epochs):
             xl_batch, yl_batch, xu_batch = self.make_batches(xl, yl, xu, shuffle=True)
-
+            self.create_history(epc = True)
+            self.epoch_start = time.time()
             for self.batch in range(self.n_batches):
+                self.batch_start = time.time()
                 self.uda_step(xl_batch[self.batch], yl_batch[self.batch], xu_batch[self.batch])
                 self.train_accuracy = self.evaluate(xl_batch[self.batch], yl_batch[self.batch])
                 self.create_history(eol=False)
@@ -147,7 +150,10 @@ class Semi_Supervised_Trainer:
 
 
 
-    def create_history(self, eol):
+    def create_history(self, eol=True, epc = False):
+        if epc:
+            print('Epoch {epc}/{epc_end}'.format(epc=(self.epoch + 1), epc_end=(self.Epochs)))
+            return
         if not self.history_created:
             self.history_created = True
             self.history = pd.DataFrame(index=range(0, self.total_steps),
@@ -166,28 +172,39 @@ class Semi_Supervised_Trainer:
         self.history.Unsupervised_Loss[self.iter] = self.loss_u
         self.history.Supervised_Loss[self.iter] = self.loss_s
         self.history.Weighted_Training_Accuracy[self.iter] = self.w_train_acc
+        eq_n = int(30 * (self.batch+1) / self.n_batches)
+        done =  str('=') * eq_n + str('>') + str('.') * (29 - eq_n)
+        done = done[:30]
         if not eol:
-            print(
-                'Epoch {epc} {batch}/{nbatch}, train accuracy:{acc:1.2f}%, L-divergence:{divL:1.4f}, L-cross entropy:{supL:1.4f}'.format(
+            ETA = (self.n_batches-1-self.batch)*(time.time() - self.batch_start)
+            ETA = str(datetime.timedelta(seconds=int(ETA)))
+            while ETA[0] == ':' or ETA[0] == '0':
+                ETA = ETA[1:]
+                if ETA == '':
+                    break
+            print('{batch}/{nbatch} [{done}] - ETA: {ETA} - accuracy: {acc:1.2f}% - U_loss: {divL:1.4f} - L_loss: {supL:1.4f}'.format(
+                    ETA = ETA,
+                    done=done,
                     epc=(self.epoch + 1),
                     batch=(self.batch + 1),
                     nbatch=self.n_batches,
                     acc=self.w_train_acc,
-                    divL=np.mean(
-                        self.history.Unsupervised_Loss[
-                        self.iter - self.batch: self.iter - 1]),
-                    supL=np.mean(
-                        self.history.Supervised_Loss[
-                        self.iter - self.batch: self.iter - 1])
+                    divL=np.mean(self.history.Unsupervised_Loss[self.iter - self.batch: self.iter - 1]),
+                    supL=np.mean(self.history.Supervised_Loss[self.iter - self.batch: self.iter - 1])
                     ),end='\r')
         else:
-            print('Epoch {epc} {batch}/{nbatch}, train accuracy:{acc:1.2f}%, validation accuracy:{valacc:1.2f}%,L-divergence:{divL:1.4f}, L-cross entropy:{supL:1.4f}'.format(epc=(self.epoch + 1),
-                                                                                 batch=(self.batch + 1),
-                                                                                 nbatch=self.n_batches,
-                                                                                 acc=self.w_train_acc,
-                                                                                 valacc=self.val_accuracy,
-                                                                                 divL=np.mean(self.history.Unsupervised_Loss[self.iter - self.batch: self.iter - 1]),
-                                                                                 supL=np.mean(self.history.Supervised_Loss[self.iter - self.batch: self.iter - 1])
-                                                                                 ))
+            total_t = time.time() - self.epoch_start
+            step_t = int(1000*total_t/self.n_batches)
+            print('{batch}/{nbatch} [{done}] - {total_t}s {step_t}ms/step - accuracy: {acc:1.2f}% - val accuracy: {valacc:1.2f}% - U_loss: {divL:1.4f} - L_loss: {supL:1.4f}'.format(
+                    batch=(self.batch + 1),
+                    nbatch=self.n_batches,
+                    done = done,
+                    total_t = int(total_t),
+                    step_t = step_t,
+                    acc=self.w_train_acc,
+                    valacc=self.val_accuracy,
+                    divL=np.mean(self.history.Unsupervised_Loss[self.iter - self.batch: self.iter - 1]),
+                    supL=np.mean(self.history.Supervised_Loss[self.iter - self.batch: self.iter - 1])
+                    ))
 
         self.iter += 1

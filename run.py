@@ -1,7 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from ssl import Semi_Supervised_Trainer
-import tensorflow as tf
+
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Activation, Dense, Conv2D, MaxPooling2D, Dropout, Flatten, LeakyReLU
 from DataGenerator import get_datagen, Get_Data
@@ -10,9 +10,8 @@ import time
 import sys
 import parser
 import numpy as np
-
-tf.config.gpu.set_per_process_memory_fraction(0.75)
-tf.config.gpu.set_per_process_memory_growth(True)
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+import tensorflow as tf
 
 parser = parser.GetParser()
 args = parser.parse_args()
