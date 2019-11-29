@@ -17,6 +17,8 @@ class Semi_Supervised_Trainer:
         self.optimizer = optimizer
         self.Mode = args.Mode
 
+        self.loss_s = 0
+        self.loss_u = 0
         self.history_created = False
         self.val_accuracy = np.nan
         self.iter = 0
@@ -62,7 +64,10 @@ class Semi_Supervised_Trainer:
             self.epoch_start = time.time()
             for self.batch in range(self.n_batches):
                 self.batch_start = time.time()
-                self.uda_step(xl_batch[self.batch], yl_batch[self.batch], xu_batch[self.batch])
+                if self.Mode == 'UDA':
+                    self.uda_step(xl_batch[self.batch], yl_batch[self.batch], xu_batch[self.batch])
+                if self.Mode == 'Supervised':
+                    self.sup_step(xl_batch[self.batch], yl_batch[self.batch])
                 self.train_accuracy = self.evaluate(xl_batch[self.batch], yl_batch[self.batch])
                 self.create_history(eol=False)
 
@@ -133,6 +138,21 @@ class Semi_Supervised_Trainer:
         self.optimizer.apply_gradients(zip(grads, var_list))
         return
 
+    def sup_step(self, xl, yl):
+        xl_aug = self.aug(xl)
+
+        with tf.GradientTape() as tape:
+            logits_xl = self.model(xl_aug, training=True)
+
+            self.loss_s = tf.nn.softmax_cross_entropy_with_logits(labels=yl, logits=logits_xl)
+            self.loss_s = tf.reduce_mean(self.loss_s)
+            loss = self.loss_s
+
+        var_list = self.model.trainable_variables
+        grads = tape.gradient(loss, var_list)
+        self.optimizer.apply_gradients(zip(grads, var_list))
+        return
+
     def evaluate(self, x_val, y_val, batch_size=32):
         y_pred = self.predict(x_val, batch_size=batch_size)
 
@@ -175,6 +195,8 @@ class Semi_Supervised_Trainer:
         eq_n = int(30 * (self.batch+1) / self.n_batches)
         done =  str('=') * eq_n + str('>') + str('.') * (29 - eq_n)
         done = done[:30]
+        #str = str(' - U_loss: {divL:1.4f}'.format(divL = np.mean(self.history.Unsupervised_Loss[self.iter - self.batch: self.iter - 1])))
+
         if not eol:
             ETA = (self.n_batches-1-self.batch)*(time.time() - self.batch_start)
             ETA = str(datetime.timedelta(seconds=int(ETA)))
