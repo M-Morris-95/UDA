@@ -1,0 +1,1 @@
+--Dataset=MNIST --Epochs=50 --Split=60 --Mode=UDA --TSA=linear --U_Batch=256 --N_Batch=8 --Lambda=10

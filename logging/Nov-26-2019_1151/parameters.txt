@@ -1,0 +1,1 @@
+--dataset=CIFAR10 --split=4000 --epochs=40 --u_n_batch=32 --n_batch=32 --Mode=MixMatch --Lambda=10

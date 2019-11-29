@@ -1,0 +1,1 @@
+--Dataset=MNIST --Epochs=500 --Split=60 --Mode=Supervised --N_Batch=8
