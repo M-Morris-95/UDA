@@ -5,6 +5,7 @@ from ssl import Semi_Supervised_Trainer
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Activation, Dense, Conv2D, MaxPooling2D, Dropout, Flatten, LeakyReLU
 from DataGenerator import get_datagen, Get_Data
+import matplotlib.pyplot as plt
 import os
 import time
 import sys
@@ -66,3 +67,7 @@ text_file.close()
 
 network.history.to_csv (r'history.csv', index = None, header=True)
 network.model.save('UDA_Model.hdf5')
+
+network.history.Validation_Accuracy.dropna().plot()
+network.history.Training_Accuracy.dropna().plot()
+plt.show()

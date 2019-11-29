@@ -59,6 +59,7 @@ class Semi_Supervised_Trainer:
         self.num_labels = np.size(np.unique(yl))
 
         for self.epoch in range(self.Epochs):
+            self.val_accuracy = np.nan
             xl_batch, yl_batch, xu_batch = self.make_batches(xl, yl, xu, shuffle=True)
             self.create_history(epc=True)
             self.epoch_start = time.time()
