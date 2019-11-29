@@ -1,6 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from ssl import Semi_Supervised_Trainer
+import tensorflow as tf
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Activation, Dense, Conv2D, MaxPooling2D, Dropout, Flatten, LeakyReLU
 from DataGenerator import get_datagen, Get_Data
@@ -9,6 +10,9 @@ import time
 import sys
 import parser
 import numpy as np
+
+tf.config.gpu.set_per_process_memory_fraction(0.75)
+tf.config.gpu.set_per_process_memory_growth(True)
 
 parser = parser.GetParser()
 args = parser.parse_args()
@@ -22,6 +26,13 @@ model.add(Conv2D(32, (3, 3), padding='same',
                  input_shape=xl_train.shape[1:]))
 model.add(Activation('relu'))
 model.add(Conv2D(32, (3, 3)))
+model.add(Activation('relu'))
+model.add(MaxPooling2D(pool_size=(2, 2)))
+model.add(Dropout(0.25))
+
+model.add(Conv2D(64, (3, 3), padding='same'))
+model.add(Activation('relu'))
+model.add(Conv2D(64, (3, 3)))
 model.add(Activation('relu'))
 model.add(MaxPooling2D(pool_size=(2, 2)))
 model.add(Dropout(0.25))
