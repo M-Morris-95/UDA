@@ -4,6 +4,7 @@ import pandas as pd
 import time
 import datetime
 
+
 class Semi_Supervised_Trainer:
     def __init__(self, model, args, datagen=[], optimizer=tf.keras.optimizers.Adam()):
         self.model = model
@@ -34,7 +35,7 @@ class Semi_Supervised_Trainer:
 
     def make_batches(self, xl, yl, xu, shuffle=True):
         if shuffle:
-            xl, yl = self.shuffle(xl,yl)
+            xl, yl = self.shuffle(xl, yl)
             xu = self.shuffle(xu)
 
         nl_batches = int(np.ceil(np.shape(xl)[0] / self.n_batch))
@@ -52,7 +53,6 @@ class Semi_Supervised_Trainer:
         yl_batch = yl_batch[:self.n_batches]
         xu_batch = xu_batch[:self.n_batches]
 
-
         return xl_batch, yl_batch, xu_batch
 
     def train(self, model, xl, yl, xu, x_val, y_val):
@@ -60,8 +60,9 @@ class Semi_Supervised_Trainer:
 
         for self.epoch in range(self.Epochs):
             xl_batch, yl_batch, xu_batch = self.make_batches(xl, yl, xu, shuffle=True)
-            self.create_history(epc = True)
+            self.create_history(epc=True)
             self.epoch_start = time.time()
+            self.n_batches = 3
             for self.batch in range(self.n_batches):
                 self.batch_start = time.time()
                 if self.Mode == 'UDA':
@@ -83,17 +84,17 @@ class Semi_Supervised_Trainer:
         return kl
 
     def apply_tsa(self, logits, y):
-        t_T =  self.iter / self.total_steps
+        t_T = self.iter / self.total_steps
 
         if self.TSA_type == 'linear':
             at = t_T
         elif self.TSA_type == 'log':
             at = 1 - np.exp(- t_T * 5)
         elif self.TSA_type == 'exponential':
-            at = np.exp((t_T - 1) *5)
+            at = np.exp((t_T - 1) * 5)
         else:
             at = 1
-        self.TSA_lim = at*(1 - 1 / self.num_labels) + 1 / self.num_labels
+        self.TSA_lim = at * (1 - 1 / self.num_labels) + 1 / self.num_labels
 
         predictions = tf.one_hot(tf.argmax(logits, axis=1), depth=self.num_labels)
         TSA_removals = tf.reduce_max(y * predictions * tf.nn.softmax(logits), axis=1) < self.TSA_lim
@@ -108,7 +109,7 @@ class Semi_Supervised_Trainer:
             if batches >= len(x) / 32:
                 break
         x_aug = np.concatenate(x_aug)
-        return(x_aug)
+        return (x_aug)
 
     def uda_step(self, xl, yl, xu):
         xu_aug = self.aug(xu)
@@ -118,7 +119,6 @@ class Semi_Supervised_Trainer:
             logits_xl = self.model(xl_aug, training=True)
             logits_xu_aug = self.model(xu_aug, training=True)
             logits_xu = self.model(xu, training=True)
-
 
             self.loss_s = tf.nn.softmax_cross_entropy_with_logits(labels=yl, logits=logits_xl)
             self.apply_tsa(logits_xl, yl)
@@ -156,7 +156,8 @@ class Semi_Supervised_Trainer:
     def evaluate(self, x_val, y_val, batch_size=32):
         y_pred = self.predict(x_val, batch_size=batch_size)
 
-        accuracy = (tf.reduce_mean(tf.cast(tf.equal(tf.argmax(y_pred, axis=1), tf.argmax(y_val, axis = 1)), tf.float32)) * 100).numpy()
+        accuracy = (tf.reduce_mean(
+            tf.cast(tf.equal(tf.argmax(y_pred, axis=1), tf.argmax(y_val, axis=1)), tf.float32)) * 100).numpy()
         return accuracy
 
     def predict(self, x, batch_size=32):
@@ -165,12 +166,10 @@ class Semi_Supervised_Trainer:
         predictions = []
         for batch in x_batches:
             predictions.append(tf.nn.softmax(self.model(batch)))
-        predictions = tf.concat(predictions, axis = 0)
+        predictions = tf.concat(predictions, axis=0)
         return predictions
 
-
-
-    def create_history(self, eol=True, epc = False):
+    def create_history(self, eol=True, epc=False):
         if epc:
             print('Epoch {epc}/{epc_end}'.format(epc=(self.epoch + 1), epc_end=(self.Epochs)))
             return
@@ -183,7 +182,6 @@ class Semi_Supervised_Trainer:
                                                  'Unsupervised_Loss', 'Supervised_Loss'], dtype=float)
 
         self.w_train_acc = (self.w_train_acc * self.batch + self.train_accuracy) / (self.batch + 1)
-
         self.history.Epoch[self.iter] = self.epoch + 1
         self.history.Batch[self.iter] = self.batch + 1
         self.history.Iteration[self.iter] = self.iter
@@ -192,41 +190,52 @@ class Semi_Supervised_Trainer:
         self.history.Unsupervised_Loss[self.iter] = self.loss_u
         self.history.Supervised_Loss[self.iter] = self.loss_s
         self.history.Weighted_Training_Accuracy[self.iter] = self.w_train_acc
-        eq_n = int(30 * (self.batch+1) / self.n_batches)
-        done =  str('=') * eq_n + str('>') + str('.') * (29 - eq_n)
-        done = done[:30]
-        #str = str(' - U_loss: {divL:1.4f}'.format(divL = np.mean(self.history.Unsupervised_Loss[self.iter - self.batch: self.iter - 1])))
 
-        if not eol:
-            ETA = (self.n_batches-1-self.batch)*(time.time() - self.batch_start)
+        eq_n = int(30 * (self.batch + 1) / self.n_batches)
+        done = str('=') * eq_n + str('>') + str('.') * (29 - eq_n)
+        done = done[:30]
+
+        u_loss = np.mean(self.history.Unsupervised_Loss[self.iter - self.batch: self.iter - 1])
+        s_loss = np.mean(self.history.Supervised_Loss[self.iter - self.batch: self.iter - 1])
+        if u_loss != 0:
+            u_loss = str(' - u_loss: {u_loss:1.4f}'.format(u_loss=u_loss))
+            s_loss = str(' - s_loss: {s_loss:1.4f}'.format(s_loss=s_loss))
+        else:
+            u_loss = ''
+            s_loss = str(' - loss: {s_loss:1.4f}'.format(s_loss=s_loss))
+
+        acc = str(' - accuracy: {acc:1.2f}%'.format(acc=self.w_train_acc))
+
+        if eol:
+            val_acc = str(' - val accuracy: {valacc:1.2f}%'.format(valacc=self.val_accuracy))
+            end = str('\n')
+
+            total_t = time.time() - self.epoch_start
+            step_t = int(1000 * total_t / self.n_batches)
+            time_summary = str(' - {total_t:1.1f}s {step_t}ms/step'.format(total_t=total_t,
+                                                                           step_t=step_t))
+
+        else:
+            val_acc = str('')
+            end = str('\r')
+
+            ETA = (self.n_batches - 1 - self.batch) * (time.time() - self.batch_start)
             ETA = str(datetime.timedelta(seconds=int(ETA)))
             while ETA[0] == ':' or ETA[0] == '0':
                 ETA = ETA[1:]
                 if ETA == '':
                     break
-            print('{batch}/{nbatch} [{done}] - ETA: {ETA} - accuracy: {acc:1.2f}% - U_loss: {divL:1.4f} - L_loss: {supL:1.4f}'.format(
-                    ETA = ETA,
-                    done=done,
-                    epc=(self.epoch + 1),
-                    batch=(self.batch + 1),
-                    nbatch=self.n_batches,
-                    acc=self.w_train_acc,
-                    divL=np.mean(self.history.Unsupervised_Loss[self.iter - self.batch: self.iter - 1]),
-                    supL=np.mean(self.history.Supervised_Loss[self.iter - self.batch: self.iter - 1])
-                    ),end='\r')
-        else:
-            total_t = time.time() - self.epoch_start
-            step_t = int(1000*total_t/self.n_batches)
-            print('{batch}/{nbatch} [{done}] - {total_t}s {step_t}ms/step - accuracy: {acc:1.2f}% - val accuracy: {valacc:1.2f}% - U_loss: {divL:1.4f} - L_loss: {supL:1.4f}'.format(
-                    batch=(self.batch + 1),
-                    nbatch=self.n_batches,
-                    done = done,
-                    total_t = int(total_t),
-                    step_t = step_t,
-                    acc=self.w_train_acc,
-                    valacc=self.val_accuracy,
-                    divL=np.mean(self.history.Unsupervised_Loss[self.iter - self.batch: self.iter - 1]),
-                    supL=np.mean(self.history.Supervised_Loss[self.iter - self.batch: self.iter - 1])
-                    ))
+            time_summary = str('- ETA: {ETA}'.format(ETA=ETA))
+
+        print('{batch}/{nbatch} [{done}]{time_summary}{acc}{val_acc}{u_loss}{s_loss}'.format(
+            batch=(self.batch + 1),
+            nbatch=self.n_batches,
+            done=done,
+            time_summary=time_summary,
+            acc=acc,
+            val_acc=val_acc,
+            u_loss=u_loss,
+            s_loss=s_loss
+        ), end=end)
 
         self.iter += 1
