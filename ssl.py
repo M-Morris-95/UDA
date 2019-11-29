@@ -91,9 +91,20 @@ class Semi_Supervised_Trainer:
         TSA_removals = tf.reduce_max(y * predictions * tf.nn.softmax(logits), axis=1) < self.TSA_lim
         self.loss_s = tf.boolean_mask(self.loss_s, TSA_removals)
 
+    def aug(self, x):
+        x_aug = []
+        batches = 0
+        for batch in self.datagen.flow(x, batch_size=32, shuffle=False):
+            x_aug.append(batch)
+            batches += 1
+            if batches >= len(x) / 32:
+                break
+        x_aug = np.reshape(x_aug, (x.shape))
+        return(x_aug)
+
     def uda_step(self, xl, yl, xu):
-        xl_aug = self.datagen.flow(xl, batch_size=32, shuffle=False).next()
-        xu_aug = self.datagen.flow(xu, batch_size=32, shuffle=False).next()
+        xu_aug = self.aug(xu)
+        xl_aug = self.aug(xl)
 
         with tf.GradientTape() as tape:
             logits_xl = self.model(xl_aug, training=True)
