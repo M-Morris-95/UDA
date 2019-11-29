@@ -70,4 +70,5 @@ network.model.save('UDA_Model.hdf5')
 
 network.history.Validation_Accuracy.dropna().plot()
 network.history.Training_Accuracy.dropna().plot()
-plt.show()
+
+plt.savefig('training.png')
