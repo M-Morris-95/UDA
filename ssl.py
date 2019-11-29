@@ -62,7 +62,6 @@ class Semi_Supervised_Trainer:
             xl_batch, yl_batch, xu_batch = self.make_batches(xl, yl, xu, shuffle=True)
             self.create_history(epc=True)
             self.epoch_start = time.time()
-            self.n_batches = 3
             for self.batch in range(self.n_batches):
                 self.batch_start = time.time()
                 if self.Mode == 'UDA':

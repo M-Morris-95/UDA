@@ -57,7 +57,7 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/run.py" />
-      <option name="PARAMETERS" value="--Epochs=500 --TSA=linear --Lambda=10 --N_Batch=32 --U_Batch=256 --Mode=UDA" />
+      <option name="PARAMETERS" value="--Dataset=MNIST --Epochs=100 --Split=60 --Mode=UDA --TSA=linear --U_Batch=256 --N_Batch=8 --Lambda=10" />
       <option name="SHOW_COMMAND_LINE" value="true" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
