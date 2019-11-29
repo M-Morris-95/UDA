@@ -1,0 +1,1 @@
+--Mode=UDA --Split=60 --TSA=Exponential --N_Batch=8 --U_Batch=252 --Lambda=5 --Epochs=1000
