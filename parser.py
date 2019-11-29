@@ -4,7 +4,7 @@ def GetParser():
     parser = argparse.ArgumentParser(
         description='M-Morris-95 UDA parser')
 
-    parser.add_argument('--epochs', '-epochs',
+    parser.add_argument('--Epochs', '-E',
                         type=int,
                         help='Number of epochs to train on',
                         default=5,
@@ -16,42 +16,44 @@ def GetParser():
                         default=1,
                         required=False)
 
-    parser.add_argument('--TSA', '-TSA',
-                        help= 'Training sample annealing mode, options False, linear, log, exponential',
+    parser.add_argument('--TSA', '-T',
                         type=str,
+                        help= 'Training sample annealing mode, options False, linear, log, exponential',
                         default=False,
                         required=False)
 
     parser.add_argument('--Mode', '-M',
                         type = str,
-                        help='Training mode, MixMatch, UDA, Supervised',
-                        default=False,
+                        help='Training mode, UDA, Supervised',
+                        default='Supervised',
                         required=False)
 
-    parser.add_argument('--split',
+    parser.add_argument('--Split', '-S',
                         type = int,
-                        default = 100,
+                        help='Labelled/ unlabelled split',
+                        default = 4000,
                         required = False)
 
-    parser.add_argument('--dataset', '-D',
+    parser.add_argument('--Loss',
+                        type = str,
+                        help='Loss function, KL_D for KL Divergences, MSE',
+                        default = 'KL_D',
+                        required=False)
+
+    parser.add_argument('--Dataset', '-D',
                         type = str,
                         default = 'CIFAR10',
                         help = 'dataset to use, either CIFAR10 or MNIST',
                         required = False)
 
-    parser.add_argument('--u_n_batch',
+    parser.add_argument('--U_Batch', '-U',
                         type = int,
-                        default = 225,
+                        default = 32,
                         help = 'batch size for unlabelled samples',
                         required = False)
 
-    parser.add_argument('--Temp',
-                        type=float,
-                        default=0.5,
-                        help='sharpening temp',
-                        required=False)
 
-    parser.add_argument('--n_batch',
+    parser.add_argument('--N_Batch', '-B',
                         type = int,
                         default = 32,
                         help = 'batch size for labelled samples',
