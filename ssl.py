@@ -99,7 +99,7 @@ class Semi_Supervised_Trainer:
             batches += 1
             if batches >= len(x) / 32:
                 break
-        x_aug = np.reshape(x_aug, (x.shape))
+        x_aug = np.concatenate(x_aug)
         return(x_aug)
 
     def uda_step(self, xl, yl, xu):
