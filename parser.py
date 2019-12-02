@@ -22,6 +22,12 @@ def GetParser():
                         default=False,
                         required=False)
 
+    parser.add_argument('--UTSA',
+                        type=str,
+                        help= 'Unlabelled training sample annealing mode, options False, linear, log, exponential',
+                        default=False,
+                        required=False)
+
     parser.add_argument('--Mode', '-M',
                         type = str,
                         help='Training mode, UDA, Supervised',

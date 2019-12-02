@@ -14,6 +14,7 @@ class Semi_Supervised_Trainer:
         self.n_batch = args.N_Batch
         self.u_n_batch = args.U_Batch
         self.TSA_type = args.TSA
+        self.uTSA_type = args.UTSA
         self.datagen = datagen
         self.optimizer = optimizer
         self.Mode = args.Mode
@@ -100,6 +101,22 @@ class Semi_Supervised_Trainer:
         TSA_removals = tf.reduce_max(y * predictions * tf.nn.softmax(logits), axis=1) < self.TSA_lim
         self.loss_s = tf.boolean_mask(self.loss_s, TSA_removals)
 
+    def apply_utsa(self, logits_x):
+        t_T = self.iter / self.total_steps
+
+        if self.uTSA_type == 'linear':
+            at = t_T
+        elif self.uTSA_type == 'log':
+            at = 1 - np.exp(- t_T * 5)
+        elif self.uTSA_type == 'exponential':
+            at = np.exp((t_T - 1) * 5)
+        else:
+            at = 1
+        self.uTSA_lim = at * (1 - 1 / self.num_labels) + 1 / self.num_labels
+
+        uTSA_removals = tf.reduce_max(tf.nn.softmax(logits_x), axis=1) > self.uTSA_lim
+        self.loss_u = tf.boolean_mask(self.loss_u, uTSA_removals)
+
     def aug(self, x):
         x_aug = []
         batches = 0
@@ -121,12 +138,14 @@ class Semi_Supervised_Trainer:
             logits_xu = self.model(xu, training=True)
 
             self.loss_s = tf.nn.softmax_cross_entropy_with_logits(labels=yl, logits=logits_xl)
-            self.apply_tsa(logits_xl, yl)
 
             if self.Loss == 'KL_D':
                 self.loss_u = self._kl_divergence_with_logits(logits_xu, logits_xu_aug)
             else:
                 self.loss_u = tf.square(tf.nn.softmax(logits_xu) - tf.nn.softmax(logits_xu_aug))
+
+            self.apply_tsa(logits_xl, yl)
+            self.apply_utsa(logits_xu)
 
             self.loss_s = tf.reduce_mean(self.loss_s)
             self.loss_u = tf.reduce_mean(self.loss_u)
