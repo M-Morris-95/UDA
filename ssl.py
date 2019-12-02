@@ -191,6 +191,7 @@ class Semi_Supervised_Trainer:
     def create_history(self, eol=True, epc=False):
         if epc:
             print('Epoch {epc}/{epc_end}'.format(epc=(self.epoch + 1), epc_end=(self.Epochs)))
+            self.batch_time = 0
             return
         if not self.history_created:
             self.history_created = True
@@ -238,7 +239,8 @@ class Semi_Supervised_Trainer:
             val_acc = str('')
             end = str('\r')
 
-            ETA = (self.n_batches - 1 - self.batch) * (time.time() - self.batch_start)
+            self.batch_time = (self.batch_time*self.batch+time.time() - self.batch_start)/(self.batch+1)
+            ETA = (self.n_batches - 1 - self.batch) * self.batch_time
             ETA = str(datetime.timedelta(seconds=int(ETA)))
             while ETA[0] == ':' or ETA[0] == '0':
                 ETA = ETA[1:]
@@ -323,7 +325,7 @@ class Semi_Supervised_Trainer:
 
             xl_batch, yl_batch, xu_batch = self.make_batches(xl, yl, xu, shuffle=True)
 
-            if self.epoch%5==0:
+            if self.epoch%2==0:
                 xl_aug_batch = []
                 xu_aug_batch = []
                 for i in range(self.n_batches):
