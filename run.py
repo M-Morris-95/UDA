@@ -19,6 +19,8 @@ args = parser.parse_args()
 
 split = [250, 500, 1000,2000,4000]
 t = time.localtime()
+
+owd = os.getcwd()
 for s in split:
     (xl_train, yl_train, xu_train), (x_test, y_test), (x_val, y_val) = Get_Data(args.Dataset, 0.1, s)
     datagen = get_datagen(args)
@@ -62,7 +64,9 @@ for s in split:
     timestamp = time.strftime('%b-%d-%Y_%H%M', t)
 
     os.chdir('logging')
-    os.mkdir(timestamp)
+    if not os.path.exists(timestamp):
+        os.mkdir(timestamp)
+
     os.chdir(timestamp)
 
     text_file = open(str(s)+".txt", "w")
@@ -76,3 +80,4 @@ for s in split:
     network.history.Training_Accuracy.dropna().plot()
 
     plt.savefig(str(s)+'.png')
+    os.chdir(owd)
