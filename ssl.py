@@ -111,7 +111,7 @@ class Semi_Supervised_Trainer:
         elif self.uTSA_type == 'exponential':
             at = np.exp((t_T - 1) * 5)
         else:
-            at = 1
+            at = 0
         self.uTSA_lim = at * (1 - 1 / self.num_labels) + 1 / self.num_labels
 
         uTSA_removals = tf.reduce_max(tf.nn.softmax(logits_x), axis=1) > self.uTSA_lim
