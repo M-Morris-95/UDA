@@ -1,0 +1,1 @@
+--Dataset=CIFAR10 --Epochs=200 --Split=60 --Mode=UDA --TSA=None --U_Batch=256 --N_Batch=32 --Lambda=1 --UTSA=linear
