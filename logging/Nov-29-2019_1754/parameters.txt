@@ -1,0 +1,1 @@
+--Dataset=MNIST --Epochs=1000 --Split=60 --Mode=Supervised --TSA=linear --U_Batch=256 --N_Batch=8 --Lambda=10

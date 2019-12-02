@@ -1,0 +1,1 @@
+--dataset=CIFAR10 --usup --split=4000 --TSA=linear --Lambda=1 --epochs=40 --u_n_batch=32 --n_batch=16
