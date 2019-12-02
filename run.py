@@ -17,58 +17,62 @@ import tensorflow as tf
 parser = parser.GetParser()
 args = parser.parse_args()
 
-(xl_train, yl_train, xu_train), (x_test, y_test), (x_val, y_val) = Get_Data(args.Dataset, 0.1, args.Split)
-datagen = get_datagen(args)
-datagen.fit(xl_train)
-
-model = Sequential()
-model.add(Conv2D(32, (3, 3), padding='same',
-                 input_shape=xl_train.shape[1:]))
-model.add(Activation('relu'))
-model.add(Conv2D(32, (3, 3)))
-model.add(Activation('relu'))
-model.add(MaxPooling2D(pool_size=(2, 2)))
-model.add(Dropout(0.25))
-
-model.add(Conv2D(64, (3, 3), padding='same'))
-model.add(Activation('relu'))
-model.add(Conv2D(64, (3, 3)))
-model.add(Activation('relu'))
-model.add(MaxPooling2D(pool_size=(2, 2)))
-model.add(Dropout(0.25))
-
-model.add(Conv2D(64, (3, 3), padding='same'))
-model.add(Activation('relu'))
-model.add(Conv2D(64, (3, 3)))
-model.add(Activation('relu'))
-model.add(MaxPooling2D(pool_size=(2, 2)))
-model.add(Dropout(0.25))
-
-model.add(Flatten())
-model.add(Dense(512))
-model.add(Activation('relu'))
-model.add(Dropout(0.5))
-model.add(Dense(np.size(np.unique(yl_train))))
-
-network = Semi_Supervised_Trainer(model, args, datagen=datagen)
-network.train(model, xl_train, yl_train, xu_train, x_val, y_val)
-
-
+split = [250, 500, 1000,2000,4000]
 t = time.localtime()
-timestamp = time.strftime('%b-%d-%Y_%H%M', t)
+for s in split:
+    (xl_train, yl_train, xu_train), (x_test, y_test), (x_val, y_val) = Get_Data(args.Dataset, 0.1, s)
+    datagen = get_datagen(args)
+    datagen.fit(xl_train)
 
-os.chdir('logging')
-os.mkdir(timestamp)
-os.chdir(timestamp)
+    model = Sequential()
+    model.add(Conv2D(32, (3, 3), padding='same',
+                     input_shape=xl_train.shape[1:]))
+    model.add(Activation('relu'))
+    model.add(Conv2D(32, (3, 3)))
+    model.add(Activation('relu'))
+    model.add(MaxPooling2D(pool_size=(2, 2)))
+    model.add(Dropout(0.25))
 
-text_file = open("parameters.txt", "w")
-text_file.write(' '.join(sys.argv[1:]))
-text_file.close()
+    model.add(Conv2D(64, (3, 3), padding='same'))
+    model.add(Activation('relu'))
+    model.add(Conv2D(64, (3, 3)))
+    model.add(Activation('relu'))
+    model.add(MaxPooling2D(pool_size=(2, 2)))
+    model.add(Dropout(0.25))
 
-network.history.to_csv (r'history.csv', index = None, header=True)
-network.model.save('UDA_Model.hdf5')
+    model.add(Conv2D(64, (3, 3), padding='same'))
+    model.add(Activation('relu'))
+    model.add(Conv2D(64, (3, 3)))
+    model.add(Activation('relu'))
+    model.add(MaxPooling2D(pool_size=(2, 2)))
+    model.add(Dropout(0.25))
 
-network.history.Validation_Accuracy.dropna().plot()
-network.history.Training_Accuracy.dropna().plot()
+    model.add(Flatten())
+    model.add(Dense(512))
+    model.add(Activation('relu'))
+    model.add(Dropout(0.5))
+    model.add(Dense(np.size(np.unique(yl_train))))
 
-plt.savefig('training.png')
+    network = Semi_Supervised_Trainer(model, args, datagen=datagen)
+
+    network.train(model, xl_train, yl_train, xu_train, x_val, y_val)
+
+
+
+    timestamp = time.strftime('%b-%d-%Y_%H%M', t)
+
+    os.chdir('logging')
+    os.mkdir(timestamp)
+    os.chdir(timestamp)
+
+    text_file = open(str(s)+".txt", "w")
+    text_file.write(' '.join(sys.argv[1:]))
+    text_file.close()
+
+    network.history.to_csv (str(s)+'.csv', index = None, header=True)
+    network.model.save('UDA_Model.hdf5')
+
+    network.history.Validation_Accuracy.dropna().plot()
+    network.history.Training_Accuracy.dropna().plot()
+
+    plt.savefig(str(s)+'.png')
