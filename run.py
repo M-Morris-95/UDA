@@ -58,7 +58,7 @@ for s in split:
 
     network = Semi_Supervised_Trainer(model, args, datagen=datagen)
 
-    network.train(model, xl_train, yl_train, xu_train, x_val, y_val)
+    network.gpu_train(model, xl_train, yl_train, xu_train, x_val, y_val)
 
 
 
