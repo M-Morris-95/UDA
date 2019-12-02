@@ -317,16 +317,22 @@ class Semi_Supervised_Trainer:
 
         for self.epoch in range(self.Epochs):
             self.val_accuracy = np.nan
-            xl = self.aug(xl)
-            xu_aug = self.aug(xu)
 
-            xl_batch, yl_batch, xu_batch, xu_aug_batch = self.gpu_make_batches(xl, yl, xu, xu_aug, shuffle=True)
+
+            xl_batch, yl_batch, xu_batch = self.make_batches(xl, yl, xu, shuffle=True)
+
+            xl_aug_batch = []
+            xu_aug_batch = []
+            for i in range(self.n_batches):
+                xl_aug_batch.append(self.aug(xl_batch[i]))
+                xu_aug_batch.append(self.aug(xu_batch[i]))
+
             self.create_history(epc=True)
             self.epoch_start = time.time()
 
             for self.batch in range(self.n_batches):
                 self.batch_start = time.time()
-                self.gpu_uda_step(xl_batch[self.batch], yl_batch[self.batch], xu_batch[self.batch], xu_aug_batch[self.batch])
+                self.gpu_uda_step(xl_aug_batch[self.batch], yl_batch[self.batch], xu_batch[self.batch], xu_aug_batch[self.batch])
                 self.train_accuracy = self.evaluate(xl_batch[self.batch], yl_batch[self.batch])
                 self.create_history(eol=False)
 
