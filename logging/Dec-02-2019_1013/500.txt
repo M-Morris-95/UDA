@@ -1,0 +1,1 @@
+--Mode=UDA --Split=60 --TSA=False --Loss=KL_D --N_Batch=32 --U_Batch=252 --Lambda=1 --Epochs=200
