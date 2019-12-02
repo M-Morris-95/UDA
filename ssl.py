@@ -323,11 +323,12 @@ class Semi_Supervised_Trainer:
 
             xl_batch, yl_batch, xu_batch = self.make_batches(xl, yl, xu, shuffle=True)
 
-            xl_aug_batch = []
-            xu_aug_batch = []
-            for i in range(self.n_batches):
-                xl_aug_batch.append(self.aug(xl_batch[i]))
-                xu_aug_batch.append(self.aug(xu_batch[i]))
+            if self.epoch%5==0:
+                xl_aug_batch = []
+                xu_aug_batch = []
+                for i in range(self.n_batches):
+                    xl_aug_batch.append(self.aug(xl_batch[i]))
+                    xu_aug_batch.append(self.aug(xu_batch[i]))
 
             self.create_history(epc=True)
 
