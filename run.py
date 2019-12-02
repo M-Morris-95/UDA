@@ -80,4 +80,5 @@ for s in split:
     network.history.Training_Accuracy.dropna().plot()
 
     plt.savefig(str(s)+'.png')
+    plt.clf()
     os.chdir(owd)
