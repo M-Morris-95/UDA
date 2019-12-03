@@ -55,7 +55,7 @@ for s in split:
     model.add(Activation('relu'))
     model.add(Dropout(0.5))
     model.add(Dense(np.size(np.unique(yl_train))))
-
+    model.load_weights('logging/Dec-02-2019_1313/UDA_Model.hdf5')
     network = Semi_Supervised_Trainer(model, args, datagen=datagen)
 
     network.gpu_train(model, xl_train, yl_train, xu_train, x_val, y_val)
