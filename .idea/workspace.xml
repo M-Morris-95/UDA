@@ -2,16 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8257a978-0c13-4d53-82ca-c94900d1be8a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/logging/Plotter.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/writeup/Culotta.bib" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/writeup/Semi Supervised Learning Problem Statement.aux" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/writeup/Semi Supervised Learning Problem Statement.bbl" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/writeup/Semi Supervised Learning Problem Statement.blg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/writeup/Semi Supervised Learning Problem Statement.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/writeup/Semi Supervised Learning Problem Statement.pdf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/writeup/Semi Supervised Learning Problem Statement.synctex.gz" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/writeup/Semi Supervised Learning Problem Statement.tex" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ssl.py" beforeDir="false" afterPath="$PROJECT_DIR$/ssl.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -54,7 +44,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.Plotter">
+  <component name="RunManager" selected="Python.run">
     <configuration name="Plotter" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="UDA" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -216,7 +206,7 @@
       <workItem from="1574676881958" duration="318000" />
       <workItem from="1574677606245" duration="4529000" />
       <workItem from="1574696554408" duration="1463000" />
-      <workItem from="1575450255327" duration="1374000" />
+      <workItem from="1575450255327" duration="1636000" />
     </task>
     <task id="LOCAL-00001" summary="deleted unused files">
       <created>1574173828498</created>
@@ -285,12 +275,12 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/ssl.py</url>
-          <line>117</line>
+          <line>123</line>
           <option name="timeStamp" value="205" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/ssl.py</url>
-          <line>278</line>
+          <line>282</line>
           <option name="timeStamp" value="210" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">

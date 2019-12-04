@@ -35,24 +35,30 @@ class Semi_Supervised_Trainer:
             return x[p]
 
     def make_batches(self, xl, yl, xu, shuffle=True):
+        nu_batches = np.inf
+        xu_batch = 0
         if shuffle:
             xl, yl = self.shuffle(xl, yl)
-            xu = self.shuffle(xu)
+
+            if self.Mode != 'Supervised':
+                xu = self.shuffle(xu)
 
         nl_batches = int(np.ceil(np.shape(xl)[0] / self.n_batch))
-        nu_batches = int(np.ceil(np.shape(xu)[0] / self.u_n_batch))
+        self.n_batches = min(nl_batches, nu_batches)
+        self.total_steps = self.Epochs * self.n_batches
+
+        if self.Mode != 'Supervised':
+            nu_batches = int(np.ceil(np.shape(xu)[0] / self.u_n_batch))
+            xu_batch = np.array_split(xu, nu_batches)
+            xu_batch = xu_batch[:self.n_batches]
 
         yl = tf.one_hot(yl, self.num_labels).numpy()
         xl_batch = np.array_split(xl, nl_batches)
         yl_batch = np.array_split(yl, nl_batches)
-        xu_batch = np.array_split(xu, nu_batches)
 
-        self.n_batches = min(nl_batches, nu_batches)
-        self.total_steps = self.Epochs * self.n_batches
 
         xl_batch = xl_batch[:self.n_batches]
         yl_batch = yl_batch[:self.n_batches]
-        xu_batch = xu_batch[:self.n_batches]
 
         return xl_batch, yl_batch, xu_batch
 
@@ -265,15 +271,13 @@ class Semi_Supervised_Trainer:
             self.epoch_start = time.time()
             self.val_accuracy = np.nan
 
-
             xl_batch, yl_batch, xu_batch = self.make_batches(xl, yl, xu, shuffle=True)
 
-            xl_aug_batch = []
-            xu_aug_batch = []
-            for i in range(self.n_batches):
-                xl_aug_batch.append(self.aug(xl_batch[i]))
-
-                if self.Mode != 'Supervised':
+            if self.Mode != 'Supervised':
+                xl_aug_batch = []
+                xu_aug_batch = []
+                for i in range(self.n_batches):
+                    xl_aug_batch.append(self.aug(xl_batch[i]))
                     xu_aug_batch.append(self.aug(xu_batch[i]))
 
             self.create_history(epc=True)
@@ -284,7 +288,7 @@ class Semi_Supervised_Trainer:
                 if self.Mode == 'UDA':
                     self.uda_step(xl_aug_batch[self.batch], yl_batch[self.batch], xu_batch[self.batch], xu_aug_batch[self.batch])
                 elif self.Mode == 'Supervised':
-                    self.sup_step(xl_aug_batch[self.batch], yl_batch[self.batch])
+                    self.sup_step(xl_batch[self.batch], yl_batch[self.batch])
 
                 self.train_accuracy = self.evaluate(xl_batch[self.batch], yl_batch[self.batch])
                 self.create_history(eol=False)
