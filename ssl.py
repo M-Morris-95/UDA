@@ -128,40 +128,9 @@ class Semi_Supervised_Trainer:
         x_aug = np.concatenate(x_aug)
         return (x_aug)
 
-    def uda_step(self, xl, yl, xu):
-        xu_aug = self.aug(xu)
-        xl_aug = self.aug(xl)
-
-        with tf.GradientTape() as tape:
-            logits_xl = self.model(xl_aug, training=True)
-            logits_xu_aug = self.model(xu_aug, training=True)
-            logits_xu = self.model(xu, training=True)
-
-            self.loss_s = tf.nn.softmax_cross_entropy_with_logits(labels=yl, logits=logits_xl)
-
-            if self.Loss == 'KL_D':
-                self.loss_u = self._kl_divergence_with_logits(logits_xu, logits_xu_aug)
-            else:
-                self.loss_u = tf.square(tf.nn.softmax(logits_xu) - tf.nn.softmax(logits_xu_aug))
-
-            self.apply_tsa(logits_xl, yl)
-            self.apply_utsa(logits_xu)
-
-            self.loss_s = tf.reduce_mean(self.loss_s)
-            self.loss_u = tf.reduce_mean(self.loss_u)
-
-            loss = self.loss_s + self.usup_weight * self.loss_u
-
-        var_list = self.model.trainable_variables
-        grads = tape.gradient(loss, var_list)
-        self.optimizer.apply_gradients(zip(grads, var_list))
-        return
-
     def sup_step(self, xl, yl):
-        xl_aug = self.aug(xl)
-
         with tf.GradientTape() as tape:
-            logits_xl = self.model(xl_aug, training=True)
+            logits_xl = self.model(xl, training=True)
 
             self.loss_s = tf.nn.softmax_cross_entropy_with_logits(labels=yl, logits=logits_xl)
             self.loss_s = tf.reduce_mean(self.loss_s)
@@ -261,7 +230,7 @@ class Semi_Supervised_Trainer:
 
         self.iter += 1
 
-    def gpu_uda_step(self, xl, yl, xu, xu_aug):
+    def uda_step(self, xl, yl, xu, xu_aug):
 
         with tf.GradientTape() as tape:
             logits_xl = self.model(xl, training=True)
@@ -288,32 +257,6 @@ class Semi_Supervised_Trainer:
         self.optimizer.apply_gradients(zip(grads, self.var_list))
         return
 
-    def gpu_make_batches(self, xl, yl, xu, xu_aug, shuffle=True):
-        if shuffle:
-            xl, yl = self.shuffle(xl, yl)
-            xu, xu_aug = self.shuffle(xu, xu_aug)
-
-        nl_batches = int(np.ceil(np.shape(xl)[0] / self.n_batch))
-        nu_batches = int(np.ceil(np.shape(xu)[0] / self.u_n_batch))
-
-
-        self.n_batches = min(nl_batches, nu_batches)
-        self.total_steps = self.Epochs * self.n_batches
-
-        yl = tf.one_hot(yl, self.num_labels).numpy()
-        xl_batch = np.array_split(xl, nl_batches)
-        yl_batch = np.array_split(yl, nl_batches)
-        xu_batch = np.array_split(xu, nu_batches)
-        xu_aug_batch = np.array_split(xu_aug, nu_batches)
-
-
-        xl_batch = xl_batch[:self.n_batches]
-        yl_batch = yl_batch[:self.n_batches]
-        xu_batch = xu_batch[:self.n_batches]
-        xu_aug_batch = xu_aug_batch[:self.n_batches]
-
-        return xl_batch, yl_batch, xu_batch, xu_aug_batch
-
     def gpu_train(self, model, xl, yl, xu, x_val, y_val):
         self.num_labels = np.size(np.unique(yl))
 
@@ -329,13 +272,20 @@ class Semi_Supervised_Trainer:
             xu_aug_batch = []
             for i in range(self.n_batches):
                 xl_aug_batch.append(self.aug(xl_batch[i]))
-                xu_aug_batch.append(self.aug(xu_batch[i]))
+
+                if self.Mode != 'Supervised':
+                    xu_aug_batch.append(self.aug(xu_batch[i]))
 
             self.create_history(epc=True)
 
             for self.batch in range(self.n_batches):
                 self.batch_start = time.time()
-                self.gpu_uda_step(xl_aug_batch[self.batch], yl_batch[self.batch], xu_batch[self.batch], xu_aug_batch[self.batch])
+
+                if self.Mode == 'UDA':
+                    self.uda_step(xl_aug_batch[self.batch], yl_batch[self.batch], xu_batch[self.batch], xu_aug_batch[self.batch])
+                elif self.Mode == 'Supervised':
+                    self.sup_step(xl_aug_batch[self.batch], yl_batch[self.batch])
+
                 self.train_accuracy = self.evaluate(xl_batch[self.batch], yl_batch[self.batch])
                 self.create_history(eol=False)
 
