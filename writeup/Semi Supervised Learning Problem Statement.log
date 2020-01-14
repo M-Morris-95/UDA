@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019) (preloaded format=pdflatex 2019.11.19)  3 DEC 2019 15:27
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019) (preloaded format=pdflatex 2019.11.19)  9 DEC 2019 15:17
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -255,18 +255,26 @@ LaTeX Font Info:    Try loading font information for U+msb on input line 12.
 (/usr/local/texlive/2019/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 22.
+
+(/usr/local/texlive/2019/texmf-dist/tex/latex/base/omscmr.fd
+File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 22.
+
 (./Semi Supervised Learning Problem Statement.bbl) [1
 
 {/usr/local/texlive/2019/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
 (./Semi Supervised Learning Problem Statement.aux) ) 
 Here is how much of TeX's memory you used:
- 3010 strings out of 492616
- 45679 string characters out of 6129480
- 126125 words of memory out of 5000000
- 6890 multiletter control sequences out of 15000+600000
+ 3027 strings out of 492616
+ 45981 string characters out of 6129480
+ 127125 words of memory out of 5000000
+ 6904 multiletter control sequences out of 15000+600000
  11234 words of font info for 44 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 41i,6n,31p,692b,197s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 41i,6n,31p,707b,197s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2019/te
 xmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2019/tex
 mf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2019/texm
@@ -277,8 +285,8 @@ st/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2019/texmf-dist
 onts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2019/texmf-dist/font
 s/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2019/texmf-dist/fonts
 /type1/public/amsfonts/cm/cmti10.pfb>
-Output written on "Semi Supervised Learning Problem Statement.pdf" (1 page, 989
-05 bytes).
+Output written on "Semi Supervised Learning Problem Statement.pdf" (1 page, 995
+48 bytes).
 PDF statistics:
  44 PDF objects out of 1000 (max. 8388607)
  31 compressed objects within 1 object stream

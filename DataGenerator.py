@@ -3,23 +3,42 @@ import tensorflow as tf
 import numpy as np
 
 
-def Get_Data(Dataset, validation_split, unlabelled_split):
+def shuffle(x, y=[0]):
+    if len(x) == len(y):
+        p = np.random.permutation(len(x))
+        return x[p], y[p]
+    else:
+        p = np.random.permutation(len(x))
+        return x[p]
+
+def Get_Data(Dataset, validation_split, unlabelled_split = 0, labelled_split = 1, do_shuffle = True):
     if Dataset == 'CIFAR10':
         (x_train, y_train), (x_test, y_test), = tf.keras.datasets.cifar10.load_data()
     elif Dataset == 'MNIST':
         (x_train, y_train), (x_test, y_test), = tf.keras.datasets.mnist.load_data()
 
+    if do_shuffle:
+        x_train, y_train = shuffle(x_train, y_train)
+
     if np.ndim(x_train) == 3:
         x_train = x_train[:, :, :, np.newaxis]
         x_test = x_test[:, :, :, np.newaxis]
 
+
     yl_train = np.squeeze(y_train)
     xl_train = x_train / np.max(x_train)
 
-    xu_train = xl_train[unlabelled_split:]
-    yl_train = yl_train[:unlabelled_split]
-    xl_train = xl_train[:unlabelled_split]
+    if unlabelled_split != 0:
+        xu_train = xl_train[unlabelled_split:]
+        yl_train = yl_train[:unlabelled_split]
+        xl_train = xl_train[:unlabelled_split]
 
+    else:
+        if labelled_split == 1:
+            labelled_split = xl_train.shape[0]
+        xu_train = xl_train[labelled_split:]
+        yl_train = yl_train[:labelled_split]
+        xl_train = xl_train[:labelled_split]
 
     y_test = np.squeeze(y_test)
     x_test = x_test / np.max(x_test)
