@@ -1,9 +1,9 @@
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Activation, Dense, Conv2D, MaxPooling2D, Dropout, Flatten, LeakyReLU
+
 from DataGenerator import get_datagen, Get_Data
 import parser
 import numpy as np
-
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Activation, Dense, Conv2D, MaxPooling2D, Dropout, Flatten, LeakyReLU
 import tensorflow as tf
 import time
 

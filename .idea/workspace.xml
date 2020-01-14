@@ -3,11 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="8257a978-0c13-4d53-82ca-c94900d1be8a" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DataGenerator.py" beforeDir="false" afterPath="$PROJECT_DIR$/DataGenerator.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/writeup/Semi Supervised Learning Problem Statement.log" beforeDir="false" afterPath="$PROJECT_DIR$/writeup/Semi Supervised Learning Problem Statement.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/writeup/Semi Supervised Learning Problem Statement.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/writeup/Semi Supervised Learning Problem Statement.pdf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/writeup/Semi Supervised Learning Problem Statement.synctex.gz" beforeDir="false" afterPath="$PROJECT_DIR$/writeup/Semi Supervised Learning Problem Statement.synctex.gz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/writeup/Semi Supervised Learning Problem Statement.tex" beforeDir="false" afterPath="$PROJECT_DIR$/writeup/Semi Supervised Learning Problem Statement.tex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/simple_uda.py" beforeDir="false" afterPath="$PROJECT_DIR$/simple_uda.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -32,7 +28,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="settings.editor.selected.configurable" value="pyconsole" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myShowDebugConsoleByDefault" value="true" />
@@ -216,7 +212,7 @@
       <workItem from="1574696554408" duration="1463000" />
       <workItem from="1575450255327" duration="2028000" />
       <workItem from="1575554217009" duration="373000" />
-      <workItem from="1579003667944" duration="8175000" />
+      <workItem from="1579003667944" duration="8542000" />
     </task>
     <task id="LOCAL-00001" summary="deleted unused files">
       <created>1574173828498</created>
