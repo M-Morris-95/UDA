@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8257a978-0c13-4d53-82ca-c94900d1be8a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/simple_uda.py" beforeDir="false" afterPath="$PROJECT_DIR$/simple_uda.py" afterDir="false" />
-    </list>
+    <list default="true" id="8257a978-0c13-4d53-82ca-c94900d1be8a" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -138,6 +135,9 @@
       <module name="UDA" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="$PROJECT_DIR$/../../Python3/tf2_env/bin/python3.7" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="false" />
@@ -176,12 +176,12 @@
       <method v="2" />
     </configuration>
     <list>
+      <item itemvalue="Python.Plotter" />
+      <item itemvalue="Python.SSL" />
+      <item itemvalue="Python.kaggle_digit_recognizer (1)" />
       <item itemvalue="Python.kaggle_digit_recognizer" />
       <item itemvalue="Python.run" />
       <item itemvalue="Python.tf2_eager" />
-      <item itemvalue="Python.kaggle_digit_recognizer (1)" />
-      <item itemvalue="Python.SSL" />
-      <item itemvalue="Python.Plotter" />
     </list>
     <recent_temporary>
       <list>
@@ -301,7 +301,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/simple_uda.py</url>
-          <line>62</line>
+          <line>68</line>
           <option name="timeStamp" value="245" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
