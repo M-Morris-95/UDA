@@ -13,7 +13,7 @@ from tensorflow.keras.layers import Dense, Conv2D, MaxPooling2D, Dropout, Flatte
 import pandas as pd
 import numpy as np
 
-npu = False
+npu = True
 if npu:
     import npu
     npu.api('YB__Pwo51iv2ar-7mfQ7T9QNsAqeixDZUVL4MwyQqOU')
@@ -97,7 +97,8 @@ if npu:
       train_data=(x_train, y_train),
       val_data=(x_val, y_val),
       loss=npu.loss.CrossEntropyLoss,
-      optim=npu.optim.SGD(lr=0.01, momentum=0.9),
+      optim = npu.optim.Adam(),
+      # optim=npu.optim.SGD(lr=0.01, momentum=0.9),
       batch_size=512,
       epochs=10)
 
