@@ -97,13 +97,14 @@ if npu:
       train_data=(x_train, y_train),
       val_data=(x_val, y_val),
       loss=npu.loss.CrossEntropyLoss,
-      optim=npu.optim.Adam(),
+      optim=npu.optim.SGD(lr=0.01, momentum=0.9),
       batch_size=512,
       epochs=10)
 
 else:
     model.compile(loss=keras.losses.sparse_categorical_crossentropy,
-                  optimizer=keras.optimizers.Adam(),
+                  # optimizer=keras.optimizers.Adam(),
+                  optimizer=tf.keras.optimizers.SGD(lr=0.01, momentum=0.9),
                   metrics=['accuracy'])
     model.fit(x_train, y_train,batch_size=512,
               validation_data=(x_val, y_val),
