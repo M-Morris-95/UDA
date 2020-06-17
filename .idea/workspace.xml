@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8257a978-0c13-4d53-82ca-c94900d1be8a" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/Kaggle_mnist_competition_network_98.54_accuracy/uncertainty.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/UDA.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/UDA.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/simple_uda.py" beforeDir="false" afterPath="$PROJECT_DIR$/simple_uda.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Kaggle_mnist_competition_network_98.54_accuracy/kaggle_digit_recognizer.py" beforeDir="false" afterPath="$PROJECT_DIR$/Kaggle_mnist_competition_network_98.54_accuracy/kaggle_digit_recognizer.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -28,6 +30,12 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="PyConsoleOptionsProvider">
@@ -45,7 +53,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.run">
+  <component name="RunManager" selected="Python.uncertainty">
     <configuration name="Plotter" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="UDA" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -119,15 +127,15 @@
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
+      <option name="SDK_HOME" value="$PROJECT_DIR$/../../Python3/tf2_env/bin/python3.7" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Kaggle_mnist_competition_network_98.54_accuracy" />
+      <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/kaggle_digit_recognizer.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Kaggle_mnist_competition_network_98.54_accuracy/kaggle_digit_recognizer.py" />
       <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
       <option name="REDIRECT_INPUT" value="false" />
@@ -138,6 +146,9 @@
       <module name="UDA" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="$PROJECT_DIR$/../../Python3/tf2_env/bin/python3.7" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="false" />
@@ -175,6 +186,28 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="uncertainty" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="UDA" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Kaggle_mnist_competition_network_98.54_accuracy" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Kaggle_mnist_competition_network_98.54_accuracy/uncertainty.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="true" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <list>
       <item itemvalue="Python.kaggle_digit_recognizer" />
       <item itemvalue="Python.run" />
@@ -182,12 +215,14 @@
       <item itemvalue="Python.kaggle_digit_recognizer (1)" />
       <item itemvalue="Python.SSL" />
       <item itemvalue="Python.Plotter" />
+      <item itemvalue="Python.uncertainty" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.uncertainty" />
+        <item itemvalue="Python.kaggle_digit_recognizer (1)" />
         <item itemvalue="Python.Plotter" />
         <item itemvalue="Python.SSL" />
-        <item itemvalue="Python.kaggle_digit_recognizer (1)" />
         <item itemvalue="Python.tf2_eager" />
       </list>
     </recent_temporary>
@@ -213,6 +248,16 @@
       <workItem from="1575450255327" duration="2028000" />
       <workItem from="1575554217009" duration="373000" />
       <workItem from="1579003667944" duration="8542000" />
+      <workItem from="1581982768750" duration="372000" />
+      <workItem from="1584528342829" duration="583000" />
+      <workItem from="1584528999787" duration="1755000" />
+      <workItem from="1584538556683" duration="544000" />
+      <workItem from="1585392142243" duration="522000" />
+      <workItem from="1588069042019" duration="380000" />
+      <workItem from="1588069523926" duration="364000" />
+      <workItem from="1588069940885" duration="147000" />
+      <workItem from="1588070092178" duration="77000" />
+      <workItem from="1588070770378" duration="965000" />
     </task>
     <task id="LOCAL-00001" summary="deleted unused files">
       <created>1574173828498</created>
@@ -309,6 +354,11 @@
           <line>177</line>
           <option name="timeStamp" value="259" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Kaggle_mnist_competition_network_98.54_accuracy/uncertainty.py</url>
+          <line>40</line>
+          <option name="timeStamp" value="260" />
+        </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
         <breakpoint type="python-exception">
@@ -320,11 +370,12 @@
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/UDA$kaggle_digit_recognizer.coverage" NAME="kaggle_digit_recognizer Coverage Results" MODIFIED="1574173924571" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/UDA$kaggle_digit_recognizer.coverage" NAME="kaggle_digit_recognizer Coverage Results" MODIFIED="1584529016168" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Kaggle_mnist_competition_network_98.54_accuracy" />
+    <SUITE FILE_PATH="coverage/UDA$uncertainty.coverage" NAME="uncertainty Coverage Results" MODIFIED="1588070155158" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Kaggle_mnist_competition_network_98.54_accuracy" />
     <SUITE FILE_PATH="coverage/UDA$kaggle.coverage" NAME="kaggle Coverage Results" MODIFIED="1574173201362" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/UDA$SimpleAugment.coverage" NAME="SSL Coverage Results" MODIFIED="1575298197279" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/UDA$kaggle_digit_recognizer__1_.coverage" NAME="kaggle_digit_recognizer (1) Coverage Results" MODIFIED="1574865845749" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Kaggle_mnist_competition_network_98.54_accuracy" />
     <SUITE FILE_PATH="coverage/UDA$Plotter.coverage" NAME="Plotter Coverage Results" MODIFIED="1575450344747" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/logging" />
+    <SUITE FILE_PATH="coverage/UDA$kaggle_digit_recognizer__1_.coverage" NAME="kaggle_digit_recognizer (1) Coverage Results" MODIFIED="1584528837080" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Kaggle_mnist_competition_network_98.54_accuracy" />
     <SUITE FILE_PATH="coverage/UDA$tf2_eager.coverage" NAME="tf2_eager Coverage Results" MODIFIED="1574175260390" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/UDA$run.coverage" NAME="run Coverage Results" MODIFIED="1579012167941" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>

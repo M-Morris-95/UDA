@@ -1,17 +1,20 @@
-from __future__ import absolute_import, division, print_function, unicode_literals
+# from __future__ import absolute_import, division, print_function, unicode_literals
+
+
+
 import numpy as np
 import tensorflow as tf
-from tensorflow.keras.preprocessing.image import ImageDataGenerator
-import numpy as np
-
 from tensorflow import keras
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Conv2D, MaxPooling2D, Dropout, Flatten, LeakyReLU
-from tensorflow.keras.layers import BatchNormalization
-from tensorflow.keras.preprocessing import image
+from tensorflow.keras.layers import Dense, Conv2D, MaxPooling2D, Dropout, Flatten, LeakyReLU, BatchNormalization
+# from tensorflow.keras.preprocessing import image
 
 import pandas as pd
 import numpy as np
+
+import npu
+# npu.api(API_KEY)
 
 
 aug = ImageDataGenerator(
@@ -21,19 +24,6 @@ aug = ImageDataGenerator(
     height_shift_range=0.1,
     horizontal_flip=False,
     vertical_flip=False)
-
-# train = pd.read_csv('data/train.csv')
-#
-# y_train = train.label.values
-# x_train = train.drop(['label'], axis = 1)
-#
-# x_train = np.reshape(x_train.values, (-1,28,28))
-# x_train = x_train[:,:,:,np.newaxis]
-#
-# x_test = pd.read_csv('data/test.csv')
-# x_test = np.reshape(x_test.values, (-1,28,28))
-# x_test = x_test[:,:,:,np.newaxis]
-
 
 (x_train, y_train), (x_test, y_test), = tf.keras.datasets.mnist.load_data()
 if np.ndim(x_train) == 3:
@@ -49,9 +39,6 @@ y_val = y_train[:4200]
 x_train = x_train[4200:]
 y_train = y_train[4200:]
 
-
-
-
 aug = ImageDataGenerator(
         rotation_range=10,
         zoom_range = 0.10,
@@ -59,9 +46,6 @@ aug = ImageDataGenerator(
         height_shift_range=0.1)
 
 aug.fit(x_train)
-
-
-
 
 
 weight_init = keras.initializers.RandomNormal(mean=0.0, stddev=0.02)
@@ -98,7 +82,6 @@ model.add(LeakyReLU())
 model.add(Dropout(0.5))
 model.add(Dense(10, activation='softmax'))
 
-
 loss_history = []
 accuracy_history = []
 
@@ -108,16 +91,16 @@ model.compile(loss=keras.losses.sparse_categorical_crossentropy,
 
 model.load_weights("mnist_model.hdf5")
 
-model.fit_generator(aug.flow(x_train, y_train,batch_size=32),
+model.fit_generator(aug.flow(x_train, y_train,batch_size=512),
                         validation_data=(x_val, y_val),
-                        epochs = 10
+                        epochs = 1
                     )
 
 model.save('mnist_model.hdf5')
 
 predictions = np.argmax(model.predict(x_test), axis = 1)
-index = np.linspace(1,28000,28000)
+index = np.linspace(1,x_test.shape[0],x_test.shape[0])
 index = index.astype(int)
 
 submission = pd.DataFrame({'ImageId': index, 'Label': predictions})
-submission.to_csv('data/my_submission.csv', index = False)
+submission.to_csv('my_submission.csv', index = False)
