@@ -13,8 +13,10 @@ from tensorflow.keras.layers import Dense, Conv2D, MaxPooling2D, Dropout, Flatte
 import pandas as pd
 import numpy as np
 
-import npu
-# npu.api(API_KEY)
+npu = False
+if npu:
+    import npu
+    npu.api('YB__Pwo51iv2ar-7mfQ7T9QNsAqeixDZUVL4MwyQqOU')
 
 
 aug = ImageDataGenerator(
@@ -85,18 +87,34 @@ model.add(Dense(10, activation='softmax'))
 loss_history = []
 accuracy_history = []
 
-model.compile(loss=keras.losses.sparse_categorical_crossentropy,
-              optimizer= keras.optimizers.Adam(),
-              metrics=['accuracy'])
 
-model.load_weights("mnist_model.hdf5")
 
-model.fit_generator(aug.flow(x_train, y_train,batch_size=512),
-                        validation_data=(x_val, y_val),
-                        epochs = 1
-                    )
+if npu:
+    model = npu.compile(model,
+                        library='TF',
+                        input_shape=[x_train.shape[1], x_train.shape[2], x_train.shape[3]])
+    model_trained = npu.train(model,
+      train_data=(x_train, y_train),
+      val_data=(x_val, y_val),
+      loss=npu.loss.CrossEntropyLoss,
+      optim=npu.optim.SGD(lr=0.01, momentum=0.9),
+      batch_size=512,
+      epochs=10)
+    
+else:
+    model.compile(loss=keras.losses.sparse_categorical_crossentropy,
+                  optimizer=keras.optimizers.Adam(),
+                  metrics=['accuracy'])
+    model.fit_generator(aug.flow(x_train, y_train,batch_size=512),
+                            validation_data=(x_val, y_val),
+                            epochs = 1
+                        )
+# model.load_weights("mnist_model.hdf5")
+#
 
-model.save('mnist_model.hdf5')
+#
+# model.save('mnist_model.hdf5')
+
 
 predictions = np.argmax(model.predict(x_test), axis = 1)
 index = np.linspace(1,x_test.shape[0],x_test.shape[0])
