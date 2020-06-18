@@ -16,7 +16,8 @@ import numpy as np
 npu = True
 if npu:
     import npu
-    npu.api('YB__Pwo51iv2ar-7mfQ7T9QNsAqeixDZUVL4MwyQqOU')
+    npu.api('key')
+    
 
 
 aug = ImageDataGenerator(
